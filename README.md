@@ -1,6 +1,6 @@
-# PokéWorld
+# PokéRealm
 
-PokéWorld is a modern Pokédex web app built with React. Explore Pokémon information, types, habitats, and stats in a beautiful interface.
+PokéRealm is a modern Pokédex web app built with React. Explore Pokémon information, types, habitats, and stats in a beautiful interface.
 
 ## Author
 
