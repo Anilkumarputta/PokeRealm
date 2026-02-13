@@ -1,7 +1,13 @@
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ Component }) => {
-  return sessionStorage.getItem("token") ? <Component /> : <Navigate to="/" />;
+  const { accountData } = useContext(accountContext);
+
+  if (accountData.authLoading) {
+    return null;
+  }
+
+  return accountData.isLogged ? <Component /> : <Navigate to="/" />;
 };
 
 export default ProtectedRoute;

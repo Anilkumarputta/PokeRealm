@@ -1,3 +1,38 @@
+<svg width="360" height="120" viewBox="0 0 360 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<linearGradient id="wordmarkGradient" x1="48" y1="24" x2="340" y2="108" gradientUnits="userSpaceOnUse">
+			<stop stop-color="#FFD65A"/>
+			<stop offset="0.45" stop-color="#FF5F9E"/>
+			<stop offset="1" stop-color="#7B5CFF"/>
+		</linearGradient>
+		<linearGradient id="pokeballRing" x1="0" y1="0" x2="1" y2="1">
+			<stop stop-color="#41D8FF"/>
+			<stop offset="1" stop-color="#4F8DFF"/>
+		</linearGradient>
+		<filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+			<feGaussianBlur stdDeviation="3.5" result="blur"/>
+			<feMerge>
+				<feMergeNode in="blur"/>
+				<feMergeNode in="SourceGraphic"/>
+			</feMerge>
+		</filter>
+	</defs>
+
+	<g filter="url(#softGlow)">
+		<circle cx="52" cy="60" r="38" fill="#0A1026" stroke="url(#pokeballRing)" stroke-width="6"/>
+		<path d="M20 60C20 42.327 34.327 28 52 28C69.673 28 84 42.327 84 60H20Z" fill="#FF5F9E"/>
+		<path d="M20 60H84" stroke="#F4F6FF" stroke-width="7"/>
+		<circle cx="52" cy="60" r="12" fill="#F4F6FF" stroke="#1D2F58" stroke-width="5"/>
+		<circle cx="52" cy="60" r="4" fill="#4F8DFF"/>
+	</g>
+
+	<text x="102" y="58" fill="url(#wordmarkGradient)" font-family="'Comic Neue', sans-serif" font-size="44" font-weight="700" letter-spacing="1.4">
+		PokeRealm
+	</text>
+	<text x="104" y="86" fill="#AAB7DA" font-family="'Montserrat', sans-serif" font-size="14" letter-spacing="4.2">
+		EXPLORE • COLLECT • BATTLE
+	</text>
+</svg>
 <svg width="332" height="120" viewBox="0 0 332 120" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M61.633 55.7077C60.5116 49.663 52.6433 46.3312 44.8423 50.6053L46.8531 57.5234L51.4596 72.4032C57.3121 68.6228 63.1947 64.0805 61.633 55.7077ZM53.8844 65.0028C53.0325 62.2097 51.1639 56.1788 51.1639 56.1788C51.1727 56.2064 50.796 54.8882 50.3494 53.3795C52.0034 53.0826 53.5925 53.2029 54.8998 53.8344C55.6307 54.184 56.9155 54.9997 57.1961 56.546C57.8423 60.0219 56.676 62.5029 53.8844 65.0028Z" fill="white"/>
 <path d="M179.676 46.1169C175.315 42.0984 168.537 42.4104 164.56 46.7873C160.558 51.1567 160.872 57.9694 165.239 61.9717C165.595 62.3162 165.979 62.5982 166.366 62.8751L180.432 46.8725C180.184 46.6119 179.934 46.3525 179.676 46.1169ZM166.394 57.373C165.019 54.8356 165.297 51.614 167.354 49.356C169.332 47.1908 172.363 46.5743 174.948 47.5755L166.394 57.373Z" fill="white"/>

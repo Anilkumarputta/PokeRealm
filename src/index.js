@@ -6,21 +6,25 @@ import { PokeContextProvider } from './contexts/pokeContext';
 import { LoadingContextProvider } from './contexts/loadingContext';
 import { AccountContextProvider } from './contexts/accountContext';
 import { ToastContextProvider } from './contexts/toastContext';
+import { ThemeContextProvider } from './contexts/themeContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ToastContextProvider>
-    <PokeContextProvider>
-      <ModalContextProvider>
-        <FilterContextProvider>
-          <LoadingContextProvider>
-            <AccountContextProvider>
-              <App />
-            </AccountContextProvider>
-          </LoadingContextProvider>
-        </FilterContextProvider>
-      </ModalContextProvider>
-    </PokeContextProvider>
-  </ToastContextProvider>
+// ...existing code...
 );
+  <ThemeContextProvider>
+    <ToastContextProvider>
+      <PokeContextProvider>
+        <ModalContextProvider>
+          <FilterContextProvider>
+            <LoadingContextProvider>
+              <AccountContextProvider>
+                <App />
+              </AccountContextProvider>
+            </LoadingContextProvider>
+          </FilterContextProvider>
+        </ModalContextProvider>
+      </PokeContextProvider>
+    </ToastContextProvider>
+  </ThemeContextProvider>
 

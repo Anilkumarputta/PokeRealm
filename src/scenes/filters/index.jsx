@@ -27,11 +27,22 @@ const Filters = () => {
   const handleClick = async () => {
     setLoading(true);
     try {
-      let res;
-      if (filters.name || filters.type || filters.habitat) {
-        res = await pokeApi.getFilteredPokemons(filters, 0, pokemons.fixed);
-      } else {
+      if (!filters.name && !filters.type && !filters.habitat) {
         await getData();
+        return;
+      }
+      const res = await pokeApi.getFilteredPokemons(filters, 0, pokemons.fixed);
+      if (!res) {
+        setPokemons((prev) => ({
+          ...prev,
+          all: [],
+          results: [],
+          offset: 0,
+          count: 0,
+          next: 0,
+          previous: 0,
+        }));
+        return;
       }
       if (res.results.length > 0) {
         setPokemons((prev) => ({
@@ -73,6 +84,7 @@ const Filters = () => {
 
   useEffect(() => {
     handleClick();
+    // eslint-disable-next-line
   }, [filters]);
 
   return (
@@ -157,6 +169,90 @@ const Filters = () => {
       </Row>
     </Column>
   );
-};
+
+
+  return (
+    <Column width={"100%"} gap={"32px"}>
+      <Row
+        width={"95%"}
+        gap={"8px"}
+        style={{
+          flexDirection: desktop ? "row" : "column",
+          marginTop: desktop ? "0" : "32px",
+        }}
+      >
+        <Row gap={"8px"} width={desktop ? "50%" : "100%"}>
+          <HabitatsDropdown name={"Habitats"} data={habitats} />
+          <TypesDropdown name={"Types"} data={types} />
+        </Row>
+        <Search />
+        <Button
+          style={{
+            height: "45px",
+            width: desktop ? "10%" : "100%",
+          }}
+          onClick={handleClick}
+        >
+          <i className="fa fa-search"></i>
+        </Button>
+      </Row>
+
+      {(filters.type || filters.habitat || filters.name) && (
+        <Column
+          width={"90%"}
+          gap={"8px"}
+          align={"flex-start"}
+          style={{
+            marginBottom: desktop ? "" : "32px",
+          }}
+        >
+          <StatsTitle>
+            <i className="fas fa-filter"></i> Filters
+          </StatsTitle>
+          <Row
+            width={"100%"}
+            justify={"space-between"}
+            gap={desktop ? 0 : "8px"}
+          >
+            <Row gap={desktop ? "8px" : "4px"} width={"max-content"}>
+              {filters.type && (
+                <SelectedFilter name={filters.type} type={"type"} />
+              )}
+              {filters.habitat && (
+                <SelectedFilter name={filters.habitat} type={"habitat"} />
+              )}
+              {filters.name && (
+                <SelectedFilter name={filters.name} type={"name"} />
+              )}
+            </Row>
+            <OutlinedBtn
+              style={{
+                opacity: 0.8,
+              }}
+              onClick={handleClearFilters}
+            >
+              {desktop ? " Clear Filters" : "Clear"}
+            </OutlinedBtn>
+          </Row>
+        </Column>
+      )}
+
+      <Row>
+        {pokemons.count > 0 && (
+          <StatsTitle
+            style={{
+              textAlign: "left",
+              alignSelf: "flex-start",
+              width: "90%",
+            }}
+          >
+            <i className="fa-solid fa-clipboard-list" /> {pokemons.count}{" "}
+            Pokemons found
+          </StatsTitle>
+        )}
+      </Row>
+    </Column>
+  );
+}
 
 export default Filters;
