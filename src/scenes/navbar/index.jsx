@@ -1,17 +1,19 @@
-import { useContext } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Logo, Row } from "../../components/common";
 import { themeContext } from "../../contexts/themeContext";
 import { accountContext } from "../../contexts/accountContext";
-import { useNavigate } from "react-router-dom";
-
+import { pokeContext } from "../../contexts/pokeContext";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
+import logo from "../../assets/svg/logo.svg";
 
 const Navbar = () => {
   const {
     accentColor,
     themeMode,
     accentType,
-    contrast,
-    motion,
+    contrastMode,
+    motionMode,
     backgroundScene,
     seasonTheme,
     soundPack,
@@ -23,61 +25,11 @@ const Navbar = () => {
     cycleSeasonTheme,
     cycleSoundPack,
   } = useContext(themeContext);
+
   const { accountData, logout } = useContext(accountContext);
+  const { pokemons } = useContext(pokeContext);
   const navigate = useNavigate();
-
-  return (
-    <Row
-      justify={"space-between"}
-      align={"center"}
-      style={{
-        background: `linear-gradient(90deg, var(--surface-strong) 0%, var(--accent-soft) 100%)`,
-        padding: "16px 32px",
-        boxShadow: "0 2px 8px rgba(123,92,255,0.10)",
-        borderRadius: "0 0 12px 12px",
-        minHeight: "80px",
-      }}
-    >
-      <Logo src={require("../../assets/svg/logo.svg")} alt="PokéRealm Logo" />
-      <Row gap={"16px"}>
-        {accountData.isLogged ? (
-          <Button
-            style={{
-              background: `linear-gradient(135deg, var(--accent-color) 0%, var(--accent-soft) 100%)`,
-              color: "white",
-              fontWeight: 600,
-              fontSize: "16px",
-              padding: "8px 24px",
-              borderRadius: "8px",
-              boxShadow: "0 2px 8px rgba(123,92,255,0.15)",
-            }}
-            onClick={() => {
-              logout();
-              navigate("/landing");
-            }}
-          >
-            Logout
-          </Button>
-        ) : (
-          <Button
-            style={{
-              background: `linear-gradient(135deg, var(--accent-color) 0%, var(--accent-soft) 100%)`,
-              color: "white",
-              fontWeight: 600,
-              fontSize: "16px",
-              padding: "8px 24px",
-              borderRadius: "8px",
-              boxShadow: "0 2px 8px rgba(123,92,255,0.15)",
-            }}
-            onClick={() => navigate("/account")}
-          >
-            Login
-          </Button>
-        )}
-      </Row>
-    </Row>
-  );
-
+  const desktop = useMediaQuery("(min-width: 1024px)");
 
   const [logoSize, setLogoSize] = useState(desktop ? "80px" : "60px");
 
@@ -100,6 +52,10 @@ const Navbar = () => {
   }, [pokemons?.captured?.length]);
 
   useEffect(() => {
+    setLogoSize(desktop ? "80px" : "60px");
+  }, [desktop]);
+
+  useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
         setLogoSize(desktop ? "50px" : "45px");
@@ -110,35 +66,28 @@ const Navbar = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [desktop]);
 
   return (
     <Row
+      justify={"space-between"}
+      align={"center"}
       style={{
-        position: "fixed",
+        background: `linear-gradient(90deg, var(--surface-strong) 0%, var(--accent-soft) 100%)`,
+        padding: desktop ? "16px 32px" : "12px 16px",
+        boxShadow: "0 2px 8px rgba(123,92,255,0.10)",
+        borderRadius: "0 0 12px 12px",
+        minHeight: desktop ? "80px" : "68px",
+        position: "sticky",
         top: 0,
-        left: 0,
-        zIndex: 9999999,
-        backgroundColor: colors.black,
-        padding: "16px 0",
+        zIndex: 100,
       }}
-      width={"100vw"}
     >
-      <Link to="/">
-        <Logo
-          src={logo}
-          style={{
-            height: logoSize,
-            transition: "height 0.5s",
-          }}
-        />
+      <Link to="/" title="Go to home">
+        <Logo src={logo} alt="PokéRealm Logo" style={{ height: logoSize, transition: "height 0.3s" }} />
       </Link>
 
-      <Row
-        width={"auto"}
-        gap={desktop ? "8px" : "6px"}
-        style={{ position: "absolute", right: "5%" }}
-      >
+      <Row gap={desktop ? "10px" : "6px"} style={{ flexWrap: "wrap", justifyContent: "flex-end" }}>
         <Button
           title={`Switch to ${themeMode === "dark" ? "light" : "dark"} mode`}
           style={{
@@ -167,95 +116,63 @@ const Navbar = () => {
 
         {desktop && (
           <>
-            <Button
-              title={`Background scene: ${backgroundScene}`}
-              style={{
-                height: "40px",
-                padding: "0 10px",
-                fontSize: "12px",
-                textTransform: "capitalize",
-              }}
-              onClick={cycleBackgroundScene}
-            >
+            <Button title={`Background scene: ${backgroundScene}`} style={{ height: "40px", padding: "0 10px", fontSize: "12px", textTransform: "capitalize" }} onClick={cycleBackgroundScene}>
               {backgroundScene}
             </Button>
-
-            <Button
-              title={`Seasonal event theme: ${seasonTheme}`}
-              style={{
-                height: "40px",
-                padding: "0 10px",
-                fontSize: "12px",
-                textTransform: "capitalize",
-              }}
-              onClick={cycleSeasonTheme}
-            >
+            <Button title={`Seasonal event theme: ${seasonTheme}`} style={{ height: "40px", padding: "0 10px", fontSize: "12px", textTransform: "capitalize" }} onClick={cycleSeasonTheme}>
               {seasonTheme}
             </Button>
-
-            <Button
-              title={`Ambient sound pack: ${soundPack}`}
-              style={{
-                height: "40px",
-                padding: "0 10px",
-                fontSize: "12px",
-                textTransform: "capitalize",
-              }}
-              onClick={cycleSoundPack}
-            >
+            <Button title={`Ambient sound pack: ${soundPack}`} style={{ height: "40px", padding: "0 10px", fontSize: "12px", textTransform: "capitalize" }} onClick={cycleSoundPack}>
               {soundPack}
             </Button>
           </>
         )}
 
-        <Button
-          title="Toggle high contrast mode"
-          style={{
-            height: desktop ? "40px" : "34px",
-            padding: desktop ? "0 10px" : "0 8px",
-            fontSize: desktop ? "12px" : "10px",
-          }}
-          onClick={toggleContrast}
-        >
+        <Button title="Toggle high contrast mode" style={{ height: desktop ? "40px" : "34px", padding: desktop ? "0 10px" : "0 8px", fontSize: desktop ? "12px" : "10px" }} onClick={toggleContrast}>
           {contrastMode === "high" ? "HC On" : "HC Off"}
         </Button>
 
-        <Button
-          title="Toggle reduced motion"
-          style={{
-            height: desktop ? "40px" : "34px",
-            padding: desktop ? "0 10px" : "0 8px",
-            fontSize: desktop ? "12px" : "10px",
-          }}
-          onClick={toggleMotion}
-        >
+        <Button title="Toggle reduced motion" style={{ height: desktop ? "40px" : "34px", padding: desktop ? "0 10px" : "0 8px", fontSize: desktop ? "12px" : "10px" }} onClick={toggleMotion}>
           {motionMode === "reduced" ? "Motion Off" : "Motion On"}
         </Button>
 
         {accountData.isLogged ? (
-          <Link to="/account" title={`Prestige: ${prestige.label}`}>
+          <>
+            <Link to="/account" title={`Prestige: ${prestige.label}`}>
+              <Button
+                style={{
+                  borderRadius: "50%",
+                  width: desktop ? "45px" : "40px",
+                  height: desktop ? "45px" : "40px",
+                  minWidth: desktop ? "45px" : "40px",
+                  padding: 0,
+                  border: `2px solid ${prestige.color}`,
+                  boxShadow: `0 0 10px ${prestige.color}55`,
+                }}
+              >
+                <i className="fa-solid fa-user" />
+              </Button>
+            </Link>
             <Button
               style={{
-                borderRadius: "50%",
-                width: desktop ? "45px" : "40px",
-                height: desktop ? "45px" : "40px",
-                minWidth: desktop ? "45px" : "40px",
-                padding: 0,
-                border: `2px solid ${prestige.color}`,
-                boxShadow: `0 0 10px ${prestige.color}55`,
+                height: desktop ? "40px" : "34px",
+                padding: desktop ? "0 14px" : "0 10px",
+              }}
+              onClick={() => {
+                logout();
+                navigate("/landing");
               }}
             >
-              <i className="fa-solid fa-user"></i>
+              Logout
             </Button>
-          </Link>
+          </>
         ) : (
           <Button
             style={{
-              height: desktop ? "45px" : "40px",
+              height: desktop ? "40px" : "34px",
+              padding: desktop ? "0 14px" : "0 10px",
             }}
-            onClick={() =>
-              setAccountData((prev) => ({ ...prev, modalOpen: true }))
-            }
+            onClick={() => navigate("/account")}
           >
             Login
           </Button>
