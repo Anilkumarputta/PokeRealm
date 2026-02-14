@@ -1,5 +1,4 @@
 
-export default Landing;
 import { useContext } from "react";
 import { Button, Column, Logo, Row } from "../../components/common";
 import { themeContext } from "../../contexts/themeContext";
@@ -51,3 +50,5 @@ const Landing = () => {
     </Column>
   );
 };
+
+export default Landing;

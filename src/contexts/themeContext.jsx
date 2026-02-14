@@ -2,7 +2,7 @@ import { createContext, useEffect, useRef, useState } from "react";
 import colors from "../constants/colors";
 import serverApi from "../services/serverApi";
 
-
+const themeContext = createContext();
 
 const readStoredPreference = (key, validator, fallback) => {
   const stored = localStorage.getItem(key);

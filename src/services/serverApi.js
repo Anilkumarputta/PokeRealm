@@ -180,38 +180,7 @@ const serverApi = {
   }
 }
 
-export default serverApi;
 
-const url = "https://www.pokedexneaime.store/"
-
-const patchOptions = {
-  auth: {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + sessionStorage.getItem("token")
-    },
-    body: null
-  }
-}
-
-const postOptions = {
-  auth: {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + sessionStorage.getItem("token")
-    },
-    body: null
-  },
-  post: {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: null
-  }
-}
 
 const getOptions = {
   auth: {
@@ -229,74 +198,7 @@ const getOptions = {
   }
 }
 
-const deleteOptions = {
-  auth: {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${sessionStorage.getItem("token")}`
-    },
-    body: null
-  }
-}
-
-const serverApi = {
-  registerUser: async (data) => {
-    try {
-      postOptions.post.body = JSON.stringify(data)
-      const a = await fetch(`${url}auth/register`,
-        postOptions.post
-      )
-      const b = await a.json()
-      if (a.status !== 200) {
-        return { message: b.message, status: false }
-      }
-      if (b.token) {
-        sessionStorage.clear()
-        sessionStorage.setItem("token", b.token)
-        sessionStorage.setItem("user", b.username)
-        sessionStorage.setItem("id", b.id)
-        sessionStorage.setItem("name", b.name)
-      }
-      return { message: "Signed-up in successfully!", status: true, data: b }
-    } catch (error) {
-      console.error(error)
-      return false
-    }
-  },
-  loginUser: async (data) => {
-    try {
-      postOptions.post.body = JSON.stringify(data)
-      const a = await fetch(`${url}auth/login`,
-        postOptions.post
-      )
-      const b = await a.json()
-      if (a.status !== 200) {
-        return { message: b.message, status: false }
-      }
-      sessionStorage.clear()
-      sessionStorage.setItem("token", b.token)
-      sessionStorage.setItem("user", b.username)
-      sessionStorage.setItem("id", b.id)
-      sessionStorage.setItem("name", b.name)
-      return { message: "Logged in successfully!", status: true, data: b }
-    } catch (error) {
-      return { message: error, status: false }
-    }
-  },
-  getCapturedPokemons: async () => {
-    try {
-      const a = await fetch(`${url}pokemon/captured`,
-        getOptions.get
-      )
-      const b = await a.json()
-
-      if (a.status !== 200) {
-        return { message: b.message, status: false }
-      }
-
-      return { message: "Pokemons fetched successfully!", status: true, data: b }
-    } catch (error) {
+// Removed duplicate/invalid code block
       console.error(error)
       return false
     }

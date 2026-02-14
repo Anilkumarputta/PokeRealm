@@ -4,8 +4,25 @@ import { themeContext } from "../../contexts/themeContext";
 import { accountContext } from "../../contexts/accountContext";
 import { useNavigate } from "react-router-dom";
 
+
 const Navbar = () => {
-  const { accentColor } = useContext(themeContext);
+  const {
+    accentColor,
+    themeMode,
+    accentType,
+    contrast,
+    motion,
+    backgroundScene,
+    seasonTheme,
+    soundPack,
+    toggleTheme,
+    cycleAccentType,
+    toggleContrast,
+    toggleMotion,
+    cycleBackgroundScene,
+    cycleSeasonTheme,
+    cycleSoundPack,
+  } = useContext(themeContext);
   const { accountData, logout } = useContext(accountContext);
   const navigate = useNavigate();
 
@@ -60,40 +77,8 @@ const Navbar = () => {
       </Row>
     </Row>
   );
-};
 
-export default Navbar;
-import { Button, Logo, Row } from "../../components/common";
-import logo from "../../assets/svg/logo.svg";
-import colors from "../../constants/colors";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
-import { accountContext } from "../../contexts/accountContext";
-import { Link } from "react-router-dom";
-import { themeContext } from "../../contexts/themeContext";
-import { pokeContext } from "../../contexts/pokeContext";
 
-const Navbar = () => {
-  const desktop = useMediaQuery("(min-width: 768px)");
-  const { accountData, setAccountData } = useContext(accountContext);
-  const { pokemons } = useContext(pokeContext);
-  const {
-    themeMode,
-    accentType,
-    contrastMode,
-    motionMode,
-    backgroundScene,
-    seasonTheme,
-    soundPack,
-    toggleTheme,
-    cycleAccentType,
-    toggleContrast,
-    toggleMotion,
-    cycleBackgroundScene,
-    cycleSeasonTheme,
-    cycleSoundPack,
-    accentColor,
-  } = useContext(themeContext);
   const [logoSize, setLogoSize] = useState(desktop ? "80px" : "60px");
 
   const prestige = useMemo(() => {
