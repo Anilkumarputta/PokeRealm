@@ -1,6 +1,18 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import colors from "../constants/colors";
 import serverApi from "../services/serverApi";
+import {
+  THEME_STORAGE_KEY,
+  ACCENT_STORAGE_KEY,
+  CONTRAST_STORAGE_KEY,
+  MOTION_STORAGE_KEY,
+  SCENE_STORAGE_KEY,
+  SEASON_STORAGE_KEY,
+  SOUND_STORAGE_KEY,
+  scenes,
+  seasonalThemes,
+  soundPacks
+} from "../constants/theme";
 
 const themeContext = createContext();
 
