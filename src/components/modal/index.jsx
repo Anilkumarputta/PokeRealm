@@ -3,7 +3,6 @@ import colors, { createGradient } from "./../../constants/colors";
 import {
   Column,
   Name,
-  PokeProfile,
   Row,
   StatsTitle,
   TypeMarker,
@@ -153,12 +152,7 @@ const PokeModal = () => {
           }}
         ></CloseButton>
 
-        <PokeProfile
-          src={modalData?.sprites?.other?.["official-artwork"]?.front_default}
-          style={{
-            top: profileTop,
-          }}
-        />
+        {/* PokeProfile removed: implement or replace with <img> if needed */}
         <Name marginTop={desktop ? "30%" : "25%"}>
           ● {modalData.name.replaceAll("-", " ")} ●
         </Name>

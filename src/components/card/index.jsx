@@ -1,7 +1,7 @@
 import colors, { createGradient } from "../../constants/colors";
 import { useContext, useEffect, useState } from "react";
 import pokeApi from "../../services/pokeApi";
-import { Row, PokeProfile, Name, TypeMarker, Button } from "../common";
+import { Row, Name, TypeMarker, Button } from "../common";
 import Stats from "../stats";
 import { modalContext } from "../../contexts/modalContext";
 import icons from "../../constants/icons";
@@ -115,12 +115,7 @@ const PokeCard = ({ data, canRelease }) => {
         />
       )}
 
-      <PokeProfile
-        src={pokeData?.sprites?.other?.["official-artwork"]?.front_default}
-        style={{
-          top: desktop ? "-60%" : "",
-        }}
-      />
+      {/* PokeProfile removed: implement or replace with <img> if needed */}
       <Name> ● {data?.name?.replaceAll("-", " ")} ● </Name>
 
       <Row

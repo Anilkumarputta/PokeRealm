@@ -199,10 +199,6 @@ const getOptions = {
 }
 
 // Removed duplicate/invalid code block
-      console.error(error)
-      return false
-    }
-  },
   capturePokemon: async (pokemonName) => {
     try {
       postOptions.auth.body = JSON.stringify({ pokemonName: pokemonName, userId: sessionStorage.getItem("id") })
