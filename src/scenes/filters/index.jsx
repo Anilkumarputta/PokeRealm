@@ -1,6 +1,4 @@
 import { useContext, useEffect } from "react";
-
-import { useContext, useEffect } from "react";
 import { filterContext } from "../../contexts/filterContext";
 import pokeApi from "../../services/pokeApi";
 import { pokeContext } from "../../contexts/pokeContext";
