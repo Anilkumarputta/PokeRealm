@@ -87,6 +87,6 @@ const Filters = () => {
     // eslint-disable-next-line
   }, [filters]);
 
-}
+  }
 
 export default Filters;
