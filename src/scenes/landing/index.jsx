@@ -1,8 +1,10 @@
+
 import { useContext } from "react";
 import { Button, Column, Logo, Row } from "../../components/common";
 import { themeContext } from "../../contexts/themeContext";
 import { useNavigate } from "react-router-dom";
 import LandingComponents from "./components";
+import logo from "../../assets/svg/logo.svg";
 
 const Landing = () => {
   const { accentType, cycleAccentType } = useContext(themeContext);
@@ -11,7 +13,7 @@ const Landing = () => {
   return (
     <Column width={"100vw"} gap={"32px"} style={{ minHeight: "100vh" }}>
       <Row justify={"center"} gap={"16px"} style={{ marginTop: "64px" }}>
-        <Logo src={require("../../assets/svg/logo.svg")} alt="PokéRealm Logo" />
+        <Logo src={logo} alt="PokéRealm Logo" />
         <Button
           style={{
             background: `linear-gradient(135deg, var(--accent-color) 0%, var(--accent-soft) 100%)`,
