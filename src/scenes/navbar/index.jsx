@@ -28,7 +28,7 @@ const Navbar = () => {
 
   const { accountData, logout } = useContext(accountContext);
   const { pokemons } = useContext(pokeContext);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Keep this line as is
   const desktop = useMediaQuery("(min-width: 1024px)");
 
   const [logoSize, setLogoSize] = useState(desktop ? "80px" : "60px");

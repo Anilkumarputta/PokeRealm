@@ -3,27 +3,23 @@ import { Row } from "../../components/common";
 const Footer = () => {
   return (
     <Row
+      width={"100vw"}
+      align="center"
       style={{
-        margin: "30px 0",
+        background: "rgba(0,0,0,0.1)",
+        padding: "16px 0",
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        zIndex: 100,
       }}
     >
-      <p>
-        Made with ❤️ by{" "}
-        <a
-          href="https://beatrizneaime.com"
-          target="_blank"
-          rel="noreferrer"
-          style={{
-            color: "#f6f6f6",
-            marginRight: "8px",
-          }}
-        >
-          Beatriz Neaime
-        </a>
-        - 2024
-      </p>
+      <span style={{ color: "#888" }}>
+        &copy; {new Date().getFullYear()} PokéRealm. All rights reserved.
+      </span>
     </Row>
   );
 };
 
 export default Footer;
+    </Row>

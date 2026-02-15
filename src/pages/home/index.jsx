@@ -15,5 +15,14 @@ const HomePage = () => {
     </>
   );
 };
+  
+    return (
+      <Column width={"100%"} gap={"32px"}>
+        <Filters />
+        <Pokemons />
+        <Controls />
+      </Column>
+    );
+  };
 
-export default HomePage;
+  export default HomePage;

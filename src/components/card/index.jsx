@@ -1,5 +1,5 @@
 import colors, { createGradient } from "../../constants/colors";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import pokeApi from "../../services/pokeApi";
 import { Row, Name, TypeMarker, Button } from "../common";
 import Stats from "../stats";
@@ -23,31 +23,34 @@ const PokeCard = ({ data, canRelease }) => {
   const [pokeData, setPokeData] = useState();
   const [aux, setAux] = useState({ color: null, image: [] });
 
-  const getPokemon = useCallback(async () => {
+  const getPokemon = async () => {
     setLoading(true);
     try {
       const response = await pokeApi.getPokemon(data.url);
-      if (!response) return;
-      const captured = pokemons.captured.find((x) => x.pokemonName === response.name);
-      setPokeData((prev) => ({
-        ...prev,
-        ...response,
-        captured: captured
-          ? {
-              captured: true,
-              username: captured.user.username,
-              capturedAt: captured.capturedAt,
-            }
-          : null,
-      }));
-      const pokeType = response?.types?.find((x) => x.slot === 1);
-      setAux((prev) => ({ ...prev, color: colors.types[pokeType?.type?.name] }));
+      if (response) {
+        const captured = pokemons.captured.find((x) => x.pokemonName === response.name);
+        setPokeData((prev) => ({
+          ...prev,
+          ...response,
+          captured: captured
+            ? {
+                captured: true,
+                username: captured.user.username,
+                capturedAt: captured.capturedAt,
+              }
+            : null,
+        }));
+        const pokeType = response?.types?.find((x) => x.slot === 1);
+        setAux((prev) => ({ ...prev, color: colors.types[pokeType?.type?.name] }));
+      } else {
+        return;
+      }
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
-  }, [data.url, pokemons.captured, setLoading]);
+  };
 
   const handleClick = () => {
     setData(pokeData);
@@ -73,14 +76,18 @@ const PokeCard = ({ data, canRelease }) => {
 
   useEffect(() => {
     getPokemon();
-  }, [getPokemon]);
+  }, [data.url, pokemons.captured]);
 
   if (loading) {
     return <Loading />;
   }
 
   return (
-    <Card bg={createGradient(aux.color, colors.blue[900])} onClick={handleClick}>
+    <Card
+      $bg={createGradient(aux.color, colors.blue[900])}
+      onClick={handleClick}
+      tabIndex={0}
+    >
       {pokeData?.captured && (
         <img
           src={pokeball}

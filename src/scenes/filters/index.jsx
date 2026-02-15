@@ -31,6 +31,7 @@ const Filters = () => {
         await getData();
         return;
       }
+
       const res = await pokeApi.getFilteredPokemons(filters, 0, pokemons.fixed);
       if (!res) {
         setPokemons((prev) => ({
@@ -44,6 +45,7 @@ const Filters = () => {
         }));
         return;
       }
+
       if (res.results.length > 0) {
         setPokemons((prev) => ({
           ...prev,

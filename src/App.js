@@ -9,7 +9,7 @@ import PokeRoutes from "./router/router";
 import EditAccount from "./scenes/account/editAccount";
 import DeleteAccount from "./scenes/account/deleteAccount";
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
-import { useCallback, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { toastContext } from "./contexts/toastContext";
 import { pokeContext } from "./contexts/pokeContext";
 
@@ -17,7 +17,7 @@ function App() {
   const { setToast } = useContext(toastContext)
   const { setPokemons } = useContext(pokeContext)
 
-  const initConnection = useCallback(async () => {
+  const initConnection = async () => {
     try {
       const conn = new HubConnectionBuilder()
         .withUrl("https://www.pokedexneaime.store/pokemonHub")
@@ -52,6 +52,20 @@ function App() {
         })
       })
 
+      conn.on("PokemonReleased", (data) => {
+        setToast({
+          open: true,
+          title: "Success!",
+          message: `Someone released ${data.pokemonName}!`,
+          type: "info"
+        })
+
+        setPokemons((prev) => ({
+          ...prev,
+          captured: prev.captured.filter(x => x.pokemonName !== data.pokemonName)
+        }))
+      })
+
       conn.on("ReleasePokemonFailed", (data) => {
         setToast({
           open: true,
@@ -74,11 +88,11 @@ function App() {
     } catch (error) {
       console.warn("SignalR connection could not start", error);
     }
-  }, [setPokemons, setToast]);
+  };
 
   useEffect(() => {
     initConnection();
-  }, [initConnection]);
+  }, []);
 
   return (
     <Router>

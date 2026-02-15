@@ -8,6 +8,16 @@ const withAuthHeaders = (method = "GET", body = null) => ({
   },
   ...(body ? { body: JSON.stringify(body) } : {}),
 })
+const url = "https://www.pokedexneaime.store/"
+
+const withAuthHeaders = (method = "GET", body = null) => ({
+  method,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+  },
+  ...(body ? { body: JSON.stringify(body) } : {}),
+})
 
 const serverApi = {
   registerUser: async (data) => {
@@ -66,7 +76,7 @@ const serverApi = {
       return { message: "Pokemons fetched successfully!", status: true, data: b }
     } catch (error) {
       console.error(error)
-      return false;
+      return false
     }
   },
   capturePokemon: async (pokemonName) => {
@@ -123,7 +133,7 @@ const serverApi = {
       }
     } catch (error) {
       console.error(error);
-      return error;
+      return error
     }
   },
   getThemePreferences: async () => {
@@ -175,9 +185,9 @@ const serverApi = {
 
     } catch (error) {
       console.error(error)
-      return false;
+      return false
     }
   }
-};
+}
 
 export default serverApi;
