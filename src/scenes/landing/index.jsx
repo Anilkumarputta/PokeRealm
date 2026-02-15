@@ -1,14 +1,11 @@
-
 import { useContext } from "react";
 import { Button, Column, Logo, Row } from "../../components/common";
 import { themeContext } from "../../contexts/themeContext";
-import { accountContext } from "../../contexts/accountContext";
 import { useNavigate } from "react-router-dom";
 import LandingComponents from "./components";
 
 const Landing = () => {
-  const { themeMode, accentType, cycleAccentType } = useContext(themeContext);
-  const { accountData } = useContext(accountContext);
+  const { accentType, cycleAccentType } = useContext(themeContext);
   const navigate = useNavigate();
 
   return (

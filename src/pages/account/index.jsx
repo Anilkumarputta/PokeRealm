@@ -4,7 +4,7 @@ import { Button, Column, PageTitle, Row } from "../../components/common";
 import PersonalInfo from "./components/personalInfo";
 import colors from "../../constants/colors";
 import { accountContext } from "../../contexts/accountContext";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import serverApi from "../../services/serverApi";
 import { loadingContext } from "../../contexts/loadingContext";
 import PokeCard from "../../components/card";
@@ -13,11 +13,11 @@ import { Navigate } from "react-router-dom";
 const AccountPage = () => {
   const desktop = useMediaQuery("(min-width: 1024px)");
   const { accountData, setAccountData, logout } = useContext(accountContext);
-  const { loading, setLoading } = useContext(loadingContext);
+  const { setLoading } = useContext(loadingContext);
   const [redirect, setRedirect] = useState(false);
   const [pokemonsCaptured, setPokemonsCaptured] = useState([]);
 
-  const getPokemonsCaptured = async () => {
+  const getPokemonsCaptured = useCallback(async () => {
     try {
       setLoading(true);
       var captured = await serverApi.getCapturedPokemonsByUser(
@@ -31,7 +31,7 @@ const AccountPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [accountData.user.id, setLoading]);
 
   const handleLogout = () => {
     if (logout()) {
@@ -43,7 +43,7 @@ const AccountPage = () => {
     if (accountData.user.id) {
       getPokemonsCaptured();
     }
-  }, [accountData.user.id]);
+  }, [accountData.user.id, getPokemonsCaptured]);
 
   return (
     <PageContainer
@@ -73,7 +73,7 @@ const AccountPage = () => {
                   }));
                 }}
               >
-                <i class="fa-solid fa-pen-to-square"></i>
+                <i className="fa-solid fa-pen-to-square"></i>
               </Button>
               <Button
                 style={{
@@ -85,7 +85,7 @@ const AccountPage = () => {
                 }}
                 onClick={handleLogout}
               >
-                <i class="fa-solid fa-right-from-bracket"></i>
+                <i className="fa-solid fa-right-from-bracket"></i>
               </Button>
             </Row>
             <Button
@@ -103,7 +103,7 @@ const AccountPage = () => {
                 }));
               }}
             >
-              <i class="fa-solid fa-trash"></i>
+              <i className="fa-solid fa-trash"></i>
             </Button>
           </Row>
         </Column>

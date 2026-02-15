@@ -10,8 +10,6 @@ import { ThemeContextProvider } from './contexts/themeContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-// ...existing code...
-);
   <ThemeContextProvider>
     <ToastContextProvider>
       <PokeContextProvider>
@@ -27,4 +25,5 @@ root.render(
       </PokeContextProvider>
     </ToastContextProvider>
   </ThemeContextProvider>
+);
 

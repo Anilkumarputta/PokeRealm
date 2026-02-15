@@ -1,25 +1,3 @@
-// Add postOptions and patchOptions for fetch requests
-const postOptions = {
-  auth: {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${sessionStorage.getItem("token")}`
-    },
-    body: null
-  }
-};
-
-const patchOptions = {
-  auth: {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${sessionStorage.getItem("token")}`
-    },
-    body: null
-  }
-};
 const url = "https://www.pokedexneaime.store/"
 
 const withAuthHeaders = (method = "GET", body = null) => ({
