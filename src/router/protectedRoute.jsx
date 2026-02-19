@@ -1,7 +1,6 @@
-
 import { useContext } from "react";
-import { accountContext } from "../contexts/accountContext";
 import { Navigate } from "react-router-dom";
+import { accountContext } from "../contexts/accountContext";
 
 const ProtectedRoute = ({ Component }) => {
   const { accountData } = useContext(accountContext);

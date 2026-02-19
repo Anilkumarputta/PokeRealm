@@ -27,7 +27,12 @@ const Account = () => {
     username: "",
     password: "",
   });
-  const closeModal = () => setAccountData((prev) => ({ ...prev, modalOpen: false }));
+
+  const closeModal = () => {
+    setAccountData((prev) => ({
+      ...prev,
+      modalOpen: false,
+    }));
   };
 
   const signUp = async () => {

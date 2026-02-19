@@ -11,19 +11,19 @@ import { ThemeContextProvider } from './contexts/themeContext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ThemeContextProvider>
-    <ToastContextProvider>
-      <PokeContextProvider>
-        <ModalContextProvider>
-          <FilterContextProvider>
-            <LoadingContextProvider>
-              <AccountContextProvider>
-                <App />
-              </AccountContextProvider>
-            </LoadingContextProvider>
-          </FilterContextProvider>
-        </ModalContextProvider>
-      </PokeContextProvider>
-    </ToastContextProvider>
-  </ThemeContextProvider>
+  <ToastContextProvider>
+    <PokeContextProvider>
+      <ModalContextProvider>
+        <FilterContextProvider>
+          <LoadingContextProvider>
+            <AccountContextProvider>
+              <App />
+            </AccountContextProvider>
+          </LoadingContextProvider>
+        </FilterContextProvider>
+      </ModalContextProvider>
+    </PokeContextProvider>
+  </ToastContextProvider>
+</ThemeContextProvider>
 );
 

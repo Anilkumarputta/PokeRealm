@@ -8,16 +8,6 @@ const withAuthHeaders = (method = "GET", body = null) => ({
   },
   ...(body ? { body: JSON.stringify(body) } : {}),
 })
-const url = "https://www.pokedexneaime.store/"
-
-const withAuthHeaders = (method = "GET", body = null) => ({
-  method,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-  },
-  ...(body ? { body: JSON.stringify(body) } : {}),
-})
 
 const serverApi = {
   registerUser: async (data) => {

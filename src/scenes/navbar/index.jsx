@@ -1,15 +1,19 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Logo, Row } from "../../components/common";
-import { themeContext } from "../../contexts/themeContext";
-import { accountContext } from "../../contexts/accountContext";
-import { pokeContext } from "../../contexts/pokeContext";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
 import logo from "../../assets/svg/logo.svg";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { accountContext } from "../../contexts/accountContext";
+import { Link } from "react-router-dom";
+import { themeContext } from "../../contexts/themeContext";
+import { pokeContext } from "../../contexts/pokeContext";
 
 const Navbar = () => {
+  const desktop = useMediaQuery("(min-width: 768px)");
+  const { accountData, setAccountData } = useContext(accountContext);
+  const { pokemons } = useContext(pokeContext);
   const {
-    accentColor,
     themeMode,
     accentType,
     contrastMode,
@@ -24,13 +28,8 @@ const Navbar = () => {
     cycleBackgroundScene,
     cycleSeasonTheme,
     cycleSoundPack,
+    accentColor,
   } = useContext(themeContext);
-
-  const { accountData, logout } = useContext(accountContext);
-  const { pokemons } = useContext(pokeContext);
-  const navigate = useNavigate(); // Keep this line as is
-  const desktop = useMediaQuery("(min-width: 1024px)");
-
   const [logoSize, setLogoSize] = useState(desktop ? "80px" : "60px");
 
   const prestige = useMemo(() => {
@@ -50,10 +49,6 @@ const Navbar = () => {
 
     return { label: "Starter", color: "#aab7da" };
   }, [pokemons?.captured?.length]);
-
-  useEffect(() => {
-    setLogoSize(desktop ? "80px" : "60px");
-  }, [desktop]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,7 +75,15 @@ const Navbar = () => {
         minHeight: desktop ? "80px" : "68px",
         position: "sticky",
         top: 0,
-        zIndex: 100,
+        left: 0,
+        zIndex: 9999999,
+        background:
+          themeMode === "light"
+            ? "linear-gradient(180deg, rgba(246, 250, 255, 0.92) 0%, rgba(236, 243, 255, 0.58) 100%)"
+            : "linear-gradient(180deg, rgba(4, 6, 15, 0.95) 0%, rgba(4, 6, 15, 0.55) 100%)",
+        borderBottom: "1px solid var(--border-subtle)",
+        backdropFilter: "blur(8px)",
+        padding: "16px 0",
       }}
     >
       <Link to="/" title="Go to home">
@@ -88,6 +91,22 @@ const Navbar = () => {
       </Link>
 
       <Row gap={desktop ? "10px" : "6px"} style={{ flexWrap: "wrap", justifyContent: "flex-end" }}>
+        <Button
+          title={`Switch to ${themeMode === "dark" ? "light" : "dark"} mode`}
+          style={{
+            height: logoSize,
+            transition: "height var(--motion-slow)",
+          }}
+          onClick={toggleTheme}
+        >
+          {themeMode === "dark" ? "☀ Light" : "🌙 Dark"}
+        </Button>
+
+      <Row
+        width={"auto"}
+        gap={desktop ? "8px" : "6px"}
+        style={{ position: "absolute", right: "5%" }}
+      >
         <Button
           title={`Switch to ${themeMode === "dark" ? "light" : "dark"} mode`}
           style={{
@@ -116,63 +135,95 @@ const Navbar = () => {
 
         {desktop && (
           <>
-            <Button title={`Background scene: ${backgroundScene}`} style={{ height: "40px", padding: "0 10px", fontSize: "12px", textTransform: "capitalize" }} onClick={cycleBackgroundScene}>
+            <Button
+              title={`Background scene: ${backgroundScene}`}
+              style={{
+                height: "40px",
+                padding: "0 10px",
+                fontSize: "12px",
+                textTransform: "capitalize",
+              }}
+              onClick={cycleBackgroundScene}
+            >
               {backgroundScene}
             </Button>
-            <Button title={`Seasonal event theme: ${seasonTheme}`} style={{ height: "40px", padding: "0 10px", fontSize: "12px", textTransform: "capitalize" }} onClick={cycleSeasonTheme}>
+
+            <Button
+              title={`Seasonal event theme: ${seasonTheme}`}
+              style={{
+                height: "40px",
+                padding: "0 10px",
+                fontSize: "12px",
+                textTransform: "capitalize",
+              }}
+              onClick={cycleSeasonTheme}
+            >
               {seasonTheme}
             </Button>
-            <Button title={`Ambient sound pack: ${soundPack}`} style={{ height: "40px", padding: "0 10px", fontSize: "12px", textTransform: "capitalize" }} onClick={cycleSoundPack}>
+
+            <Button
+              title={`Ambient sound pack: ${soundPack}`}
+              style={{
+                height: "40px",
+                padding: "0 10px",
+                fontSize: "12px",
+                textTransform: "capitalize",
+              }}
+              onClick={cycleSoundPack}
+            >
               {soundPack}
             </Button>
           </>
         )}
 
-        <Button title="Toggle high contrast mode" style={{ height: desktop ? "40px" : "34px", padding: desktop ? "0 10px" : "0 8px", fontSize: desktop ? "12px" : "10px" }} onClick={toggleContrast}>
+        <Button
+          title="Toggle high contrast mode"
+          style={{
+            height: desktop ? "40px" : "34px",
+            padding: desktop ? "0 10px" : "0 8px",
+            fontSize: desktop ? "12px" : "10px",
+          }}
+          onClick={toggleContrast}
+        >
           {contrastMode === "high" ? "HC On" : "HC Off"}
         </Button>
 
-        <Button title="Toggle reduced motion" style={{ height: desktop ? "40px" : "34px", padding: desktop ? "0 10px" : "0 8px", fontSize: desktop ? "12px" : "10px" }} onClick={toggleMotion}>
+        <Button
+          title="Toggle reduced motion"
+          style={{
+            height: desktop ? "40px" : "34px",
+            padding: desktop ? "0 10px" : "0 8px",
+            fontSize: desktop ? "12px" : "10px",
+          }}
+          onClick={toggleMotion}
+        >
           {motionMode === "reduced" ? "Motion Off" : "Motion On"}
         </Button>
 
         {accountData.isLogged ? (
-          <>
-            <Link to="/account" title={`Prestige: ${prestige.label}`}>
-              <Button
-                style={{
-                  borderRadius: "50%",
-                  width: desktop ? "45px" : "40px",
-                  height: desktop ? "45px" : "40px",
-                  minWidth: desktop ? "45px" : "40px",
-                  padding: 0,
-                  border: `2px solid ${prestige.color}`,
-                  boxShadow: `0 0 10px ${prestige.color}55`,
-                }}
-              >
-                <i className="fa-solid fa-user" />
-              </Button>
-            </Link>
+          <Link to="/account" title={`Prestige: ${prestige.label}`}>
             <Button
               style={{
-                height: desktop ? "40px" : "34px",
-                padding: desktop ? "0 14px" : "0 10px",
-              }}
-              onClick={() => {
-                logout();
-                navigate("/landing");
+                borderRadius: "50%",
+                width: desktop ? "45px" : "40px",
+                height: desktop ? "45px" : "40px",
+                minWidth: desktop ? "45px" : "40px",
+                padding: 0,
+                border: `2px solid ${prestige.color}`,
+                boxShadow: `0 0 10px ${prestige.color}55`,
               }}
             >
-              Logout
+              <i className="fa-solid fa-user"></i>
             </Button>
-          </>
+          </Link>
         ) : (
           <Button
             style={{
-              height: desktop ? "40px" : "34px",
-              padding: desktop ? "0 14px" : "0 10px",
+              height: desktop ? "45px" : "40px",
             }}
-            onClick={() => navigate("/account")}
+            onClick={() =>
+              setAccountData((prev) => ({ ...prev, modalOpen: true }))
+            }
           >
             Login
           </Button>

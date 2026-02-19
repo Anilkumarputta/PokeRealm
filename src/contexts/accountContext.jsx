@@ -63,30 +63,13 @@ export const AccountContextProvider = ({ children }) => {
   };
 
   const login = async (credentials) => {
-    // Local dev admin bypass
-    if (
-      process.env.NODE_ENV === "development" &&
-      credentials.username === "admin" &&
-      credentials.password === "admin123"
-    ) {
-      const adminUser = {
-        id: "0",
-        name: "Admin User",
-        username: "admin",
-        token: "local-admin-token",
-      };
-      persistSession(adminUser);
-      syncUserState(adminUser);
-      window.dispatchEvent(new Event("auth-changed"));
-      return { status: true, message: "Logged in as local admin", data: adminUser };
-    }
-    // Normal login
     const res = await serverApi.loginUser(credentials);
     if (res?.status && res?.data) {
       persistSession(res.data);
       syncUserState(res.data);
       window.dispatchEvent(new Event("auth-changed"));
     }
+
     return res;
   };
 
