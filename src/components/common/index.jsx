@@ -91,36 +91,7 @@ const Button = styled.button`
   }
 `;
 
-const PokeProfile = styled.img`
-  position: absolute;
-  transform: scale(0.5);
-  top: -50%;
 
-  @media (max-width: 320px) {
-    transform: scale(0.4);
-    top: -150%;
-  }
-
-  @media (max-width: 768px) {
-    transform: scale(0.4);
-    top: -100%;
-  }
-
-  @media (max-width: 415px) {
-    transform: scale(0.4);
-    top: -100%;
-  }
-
-  @media (min-width: 768px) and (max-width: 1023px) {
-    transform: scale(0.6);
-    top: -60%;
-  }
-
-  @media (min-width: 1024px) and (max-width: 1365px) {
-    transform: scale(0.5);
-    top: -100%;
-  }
-`;
 
 const Name = styled.h2`
   color: var(--text-primary);
@@ -244,11 +215,14 @@ const PageTitle = styled.h1`
   }
 `;
 
+
+
+
+
 export {
   Row,
   Button,
   Column,
-  PokeProfile,
   Name,
   Logo,
   TypeMarker,

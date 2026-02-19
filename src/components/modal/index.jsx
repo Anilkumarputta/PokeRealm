@@ -3,7 +3,6 @@ import colors, { createGradient } from "./../../constants/colors";
 import {
   Column,
   Name,
-  PokeProfile,
   Row,
   StatsTitle,
   TypeMarker,
@@ -14,7 +13,7 @@ import {
 } from "../common";
 import Stats from "../stats";
 import GraphData from "../graphData";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { modalContext } from "../../contexts/modalContext";
 import icons from "../../constants/icons";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
@@ -33,22 +32,7 @@ const PokeModal = () => {
   const { setToast } = useContext(toastContext);
   const [color, setColor] = useState();
   const [weaknesses, setWeaknesses] = useState([]);
-  const [profileTop, setProfileTop] = useState();
   const [loading, setLoading] = useState(false);
-
-  const getProfileTop = () => {
-    const width = window.innerWidth;
-
-    if ((320 <= width && width < 375) || (375 <= width && width < 425)) {
-      setProfileTop("-40%");
-    } else if (425 <= width && width < 768) {
-      setProfileTop("-35%");
-    } else if (768 <= width && width < 1024) {
-      setProfileTop("-50%");
-    } else if (width >= 1024) {
-      setProfileTop("-35%");
-    }
-  };
 
   const formatOrder = (order) => {
     if (order < 10) {
@@ -60,17 +44,17 @@ const PokeModal = () => {
     }
   };
 
-  const getColor = () => {
-    const pokeType = modalData?.types[0];
+  const getColor = useCallback(() => {
+    const pokeType = modalData?.types?.[0];
     setColor(colors.types[pokeType?.type?.name]);
-  };
+  }, [modalData]);
 
-  const getWeaknesses = () => {
-    modalData?.types.map((item) => {
-      const type = types[item.type.name];
-      setWeaknesses([...type.weakness]);
-    });
-  };
+  const getWeaknesses = useCallback(() => {
+    const uniqueWeaknesses = modalData?.types
+      ? [...new Set(modalData.types.flatMap((item) => types[item.type.name]?.weakness ?? []))]
+      : [];
+    setWeaknesses(uniqueWeaknesses);
+  }, [modalData]);
 
   const capturePokemon = async (userId, pokemonName, speciesUrl) => {
     const conn = new HubConnectionBuilder()
@@ -114,8 +98,7 @@ const PokeModal = () => {
   useEffect(() => {
     getColor();
     getWeaknesses();
-    getProfileTop();
-  }, [modalData]);
+  }, [getColor, getWeaknesses, modalData]);
 
   if (!modal) return null;
 
@@ -153,12 +136,7 @@ const PokeModal = () => {
           }}
         ></CloseButton>
 
-        <PokeProfile
-          src={modalData?.sprites?.other?.["official-artwork"]?.front_default}
-          style={{
-            top: profileTop,
-          }}
-        />
+        {/* PokeProfile removed: implement or replace with <img> if needed */}
         <Name marginTop={desktop ? "30%" : "25%"}>
           ● {modalData.name.replaceAll("-", " ")} ●
         </Name>
@@ -179,7 +157,7 @@ const PokeModal = () => {
                   bg={colors.types[item.type.name]}
                   rounded={true}
                 >
-                  <img src={icons[item.type.name]} />
+                  <img src={icons[item.type.name]} alt={item.type.name} />
                 </TypeMarker>
               );
             })}
@@ -196,7 +174,7 @@ const PokeModal = () => {
           <Row width={"100%"} align={"flex-start"}>
             <Column width={"50%"} align={"flex-start"}>
               <StatsTitle>
-                <i class="fa-solid fa-chart-simple"></i> Base Stats
+                <i className="fa-solid fa-chart-simple"></i> Base Stats
               </StatsTitle>
               <GraphData
                 icon={"heart-pulse"}
@@ -233,7 +211,7 @@ const PokeModal = () => {
             <Column width={"50%"} gap={"16px"} height={"100%"}>
               <Column width={"100%"} align={"flex-start"}>
                 <StatsTitle>
-                  <i class="fa-solid fa-star"></i> Abilities
+                  <i className="fa-solid fa-star"></i> Abilities
                 </StatsTitle>
                 <Row
                   width={"100%"}
@@ -245,9 +223,9 @@ const PokeModal = () => {
                 >
                   {modalData?.abilities.map((item) => {
                     return (
-                      <Row gap={"4px"} width={"max-content"}>
+                      <Row key={item.ability.name} gap={"4px"} width={"max-content"}>
                         <i
-                          class="fa-regular fa-circle"
+                          className="fa-regular fa-circle"
                           style={{
                             color: colors.gray[400],
                             fontSize: "8px",
@@ -261,7 +239,7 @@ const PokeModal = () => {
               </Column>
               <Column width={"100%"} align={"space-between"} gap={"8px"}>
                 <StatsTitle>
-                  <i class="fa-solid fa-volume-high"></i> Sound
+                  <i className="fa-solid fa-volume-high"></i> Sound
                 </StatsTitle>
                 <AudioPlayer audio={modalData?.cries?.latest} width={"100%"} />
               </Column>
@@ -271,19 +249,20 @@ const PokeModal = () => {
                     fontSize: "16px",
                   }}
                 >
-                  <i class="fa-solid fa-circle-radiation"></i> Weaknesses
+                  <i className="fa-solid fa-circle-radiation"></i> Weaknesses
                 </StatsTitle>
                 <Row width={"max-content"}>
                   {weaknesses.map((item) => {
                     return (
                       <TypeMarker
+                        key={item}
                         bg={colors.types[item]}
                         rounded={true}
                         style={{
                           marginRight: "8px",
                         }}
                       >
-                        <img src={icons[item]} />
+                        <img src={icons[item]} alt={item} />
                       </TypeMarker>
                     );
                   })}

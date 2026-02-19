@@ -25,64 +25,64 @@ function App() {
       .withAutomaticReconnect()
       .build();
 
-    conn.on("CapturePokemonFailed", (data) => {
-      setToast({
-        open: true,
-        title: "Info!",
-        message: data.message,
-        type: "info"
-      })
-    })
-
-    conn.on("PokemonCaptured", (data) => {
-      setPokemons((prev) => ({
-        ...prev,
-        captured: [...prev.captured, {
-          pokemonName: data.pokemonName,
-          username: data.user.username,
-          capturedAt: data.capturedAt
-        }]
-      }))
-
-      setToast({
-        open: true,
-        title: "Success!",
-        message: `${data.user.username} captured ${data.pokemonName}`,
-        type: "info"
-      })
-    })
-
-    conn.on("PokemonReleased", (data) => {
-      setToast({
-        open: true,
-        title: "Success!",
-        message: `Someone released ${data.pokemonName}!`,
-        type: "info"
+      conn.on("CapturePokemonFailed", (data) => {
+        setToast({
+          open: true,
+          title: "Info!",
+          message: data.message,
+          type: "info"
+        })
       })
 
-      setPokemons((prev) => ({
-        ...prev,
-        captured: prev.captured.filter(x => x.pokemonName !== data.pokemonName)
-      }))
-    })
+      conn.on("PokemonCaptured", (data) => {
+        setPokemons((prev) => ({
+          ...prev,
+          captured: [...prev.captured, {
+            pokemonName: data.pokemonName,
+            username: data.user.username,
+            capturedAt: data.capturedAt
+          }]
+        }))
 
-    conn.on("ReleasePokemonFailed", (data) => {
-      setToast({
-        open: true,
-        title: "Info!",
-        message: data.message,
-        type: "info"
+        setToast({
+          open: true,
+          title: "Success!",
+          message: `${data.user.username} captured ${data.pokemonName}`,
+          type: "info"
+        })
       })
-    })
 
-    conn.on("PokemonNotReleased", (data) => {
-      setToast({
-        open: true,
-        title: "Info!",
-        message: data.message,
-        type: "info"
+      conn.on("PokemonReleased", (data) => {
+        setToast({
+          open: true,
+          title: "Success!",
+          message: `Someone released ${data.pokemonName}!`,
+          type: "info"
+        })
+
+        setPokemons((prev) => ({
+          ...prev,
+          captured: prev.captured.filter(x => x.pokemonName !== data.pokemonName)
+        }))
       })
-    })
+
+      conn.on("ReleasePokemonFailed", (data) => {
+        setToast({
+          open: true,
+          title: "Info!",
+          message: data.message,
+          type: "info"
+        })
+      })
+
+      conn.on("PokemonNotReleased", (data) => {
+        setToast({
+          open: true,
+          title: "Info!",
+          message: data.message,
+          type: "info"
+        })
+      })
 
     await conn.start();
     } catch (error) {

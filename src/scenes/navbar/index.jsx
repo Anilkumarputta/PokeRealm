@@ -1,3 +1,5 @@
+import { useContext, useEffect, useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Logo, Row } from "../../components/common";
 import logo from "../../assets/svg/logo.svg";
 import { useContext, useEffect, useMemo, useState } from "react";
@@ -63,8 +65,15 @@ const Navbar = () => {
 
   return (
     <Row
+      justify={"space-between"}
+      align={"center"}
       style={{
-        position: "fixed",
+        background: `linear-gradient(90deg, var(--surface-strong) 0%, var(--accent-soft) 100%)`,
+        padding: desktop ? "16px 32px" : "12px 16px",
+        boxShadow: "0 2px 8px rgba(123,92,255,0.10)",
+        borderRadius: "0 0 12px 12px",
+        minHeight: desktop ? "80px" : "68px",
+        position: "sticky",
         top: 0,
         left: 0,
         zIndex: 9999999,
@@ -76,17 +85,22 @@ const Navbar = () => {
         backdropFilter: "blur(8px)",
         padding: "16px 0",
       }}
-      width={"100vw"}
     >
-      <Link to="/">
-        <Logo
-          src={logo}
+      <Link to="/" title="Go to home">
+        <Logo src={logo} alt="PokéRealm Logo" style={{ height: logoSize, transition: "height 0.3s" }} />
+      </Link>
+
+      <Row gap={desktop ? "10px" : "6px"} style={{ flexWrap: "wrap", justifyContent: "flex-end" }}>
+        <Button
+          title={`Switch to ${themeMode === "dark" ? "light" : "dark"} mode`}
           style={{
             height: logoSize,
             transition: "height var(--motion-slow)",
           }}
-        />
-      </Link>
+          onClick={toggleTheme}
+        >
+          {themeMode === "dark" ? "☀ Light" : "🌙 Dark"}
+        </Button>
 
       <Row
         width={"auto"}

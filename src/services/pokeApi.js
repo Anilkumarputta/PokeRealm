@@ -80,7 +80,7 @@ const pokeApi = {
         } else {
           const dataNames = new Set(res.all.map(pokemon => pokemon.name));
           const aux = []
-          a.filter(pokemon => {
+          a.forEach((pokemon) => {
             if (dataNames.has(pokemon.name)) {
               aux.push({ name: pokemon.name, url: pokemon.url })
             }
@@ -95,7 +95,7 @@ const pokeApi = {
         } else {
           const dataNames = new Set(res.all.map(pokemon => pokemon.name));
           const aux = []
-          a.filter(pokemon => {
+          a.forEach((pokemon) => {
             if (dataNames.has(pokemon.pokemon.name)) {
               aux.push({ name: pokemon.pokemon.name, url: pokemon.pokemon.url })
             }

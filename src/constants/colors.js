@@ -51,6 +51,6 @@ const createGradient = (color, bg) => {
   return `linear-gradient(170deg, ${base} 0%, var(--surface-base, #04060f) 55%, ${highlight} 100%)`;
 };
 
-export { createGradient };
+    export { createGradient };
 
 export default colors;

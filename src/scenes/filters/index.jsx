@@ -86,6 +86,7 @@ const Filters = () => {
 
   useEffect(() => {
     handleClick();
+    // eslint-disable-next-line
   }, [filters]);
 
   return (

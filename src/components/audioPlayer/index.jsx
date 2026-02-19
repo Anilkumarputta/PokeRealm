@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { Button, Row } from "../common";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 const Player = styled(Button)`
   border-radius: 50%;
@@ -13,8 +12,6 @@ const Player = styled(Button)`
 `;
 
 const AudioPlayer = ({ audio, width }) => {
-  const desktop = useMediaQuery("(min-width: 1024px)");
-
   const playAudio = () => {
     const sound = new Audio(audio);
     sound.play();

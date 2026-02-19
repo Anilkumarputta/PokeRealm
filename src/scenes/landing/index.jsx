@@ -17,38 +17,12 @@ import GraphData from "./../../components/graphData/index";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import AudioPlayer from "../../components/audioPlayer";
 
-const LandingPage = () => {
-  const desktop = useMediaQuery("(min-width: 1024px)");
-  const [pokemon, setPokemon] = useState({});
-  const [data, setData] = useState({
-    color: null,
-    pokeImage: null,
-    audio: null,
-  });
+import { Column, Row, StatsTitle } from "../../components/common";
+import { useContext } from "react";
+import { themeContext } from "../../contexts/themeContext";
 
-  const getRandomPokemon = async () => {
-    const pokemon = await pokeApi.getRandomPokemon();
-    if (pokemon) {
-      setPokemon(pokemon);
-      const pokeType = pokemon?.types?.find((x) => {
-        return x.slot === 1;
-      });
-
-      if (pokeType) {
-        setData((prev) => ({
-          ...prev,
-          pokeImage: pokemon?.sprites?.other["official-artwork"]?.front_default,
-          color: colors.types[pokeType.type.name],
-          audio: pokemon?.cries?.latest,
-        }));
-      }
-    }
-  };
-
-  useEffect(() => {
-    getRandomPokemon();
-  }, []);
-
+const Landing = () => {
+  const { theme } = useContext(themeContext);
   return (
     <PageContainer
       style={{
@@ -137,4 +111,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default Landing;

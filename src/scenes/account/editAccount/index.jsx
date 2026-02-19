@@ -78,7 +78,7 @@ const EditAccount = () => {
         password: "",
       });
     }
-  }, [accountData.editAccount]);
+  }, [accountData.editAccount, accountData.user.name, accountData.user.username]);
 
   if (!accountData.editAccount) return null;
 

@@ -15,7 +15,7 @@ const CapturedInfo = ({ name, date }) => {
         alignSelf: "flex-start",
       }}
     >
-      <img src={pokeball} height={"18px"} />
+      <img src={pokeball} height={"18px"} alt="Pokeball" />
       <p
         style={{
           fontSize: "12px",
