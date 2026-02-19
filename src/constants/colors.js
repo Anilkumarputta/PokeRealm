@@ -1,16 +1,27 @@
 const colors = {
-  black: "#000000",
+  black: "#04060f",
   blue: {
-    900: "#060b14",
-    800: "##1c365e",
-    700: "#356169",
-    600: "#225aa7"
+    900: "#0a1026",
+    800: "#1d2f58",
+    700: "#315fa8",
+    600: "#4f8dff",
   },
   gray: {
-    400: "#B0B0B0",
-    300: "#C4C4C4",
-    200: "#E0E0E0",
-    100: "#F5F5F5"
+    400: "#d0d9f5",
+    300: "#e0e7ff",
+    200: "#ecf1ff",
+    100: "#f8faff",
+  },
+  accent: {
+    violet: "#7b5cff",
+    cyan: "#41d8ff",
+    rose: "#ff5f9e",
+  },
+  semantic: {
+    success: "#29d17d",
+    warning: "#f6c445",
+    danger: "#f25d70",
+    info: "#56b4ff",
   },
   types: {
     normal: "#A8A77A",
@@ -30,13 +41,15 @@ const colors = {
     dragon: "#6F35FC",
     dark: "#705746",
     steel: "#B7B7CE",
-    fairy: "#D685AD"
-  }
-}
+    fairy: "#D685AD",
+  },
+};
 
 const createGradient = (color, bg) => {
-  return `linear-gradient(180deg, ${bg ?? colors.black} 34%, ${color} 100%)`;
-}
+  const base = bg ?? "var(--surface-strong, #0a1026)";
+  const highlight = color ?? "var(--accent-color, #7b5cff)";
+  return `linear-gradient(170deg, ${base} 0%, var(--surface-base, #04060f) 55%, ${highlight} 100%)`;
+};
 
 export { createGradient };
 

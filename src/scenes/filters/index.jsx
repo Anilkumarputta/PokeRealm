@@ -27,12 +27,25 @@ const Filters = () => {
   const handleClick = async () => {
     setLoading(true);
     try {
-      let res;
-      if (filters.name || filters.type || filters.habitat) {
-        res = await pokeApi.getFilteredPokemons(filters, 0, pokemons.fixed);
-      } else {
+      if (!filters.name && !filters.type && !filters.habitat) {
         await getData();
+        return;
       }
+
+      const res = await pokeApi.getFilteredPokemons(filters, 0, pokemons.fixed);
+      if (!res) {
+        setPokemons((prev) => ({
+          ...prev,
+          all: [],
+          results: [],
+          offset: 0,
+          count: 0,
+          next: 0,
+          previous: 0,
+        }));
+        return;
+      }
+
       if (res.results.length > 0) {
         setPokemons((prev) => ({
           ...prev,

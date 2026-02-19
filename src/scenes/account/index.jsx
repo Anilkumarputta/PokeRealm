@@ -9,13 +9,12 @@ import {
 import { accountContext } from "../../contexts/accountContext";
 import { AccountModalStyle } from "./components";
 import InputGroup from "../../components/inputGroup";
-import serverApi from "../../services/serverApi";
 import { loadingContext } from "./../../contexts/loadingContext";
 import Loading from "../../components/loading";
 import { toastContext } from "../../contexts/toastContext";
 
 const Account = () => {
-  const { accountData, setAccountData } = useContext(accountContext);
+  const { accountData, setAccountData, login, register } = useContext(accountContext);
   const { loading, setLoading } = useContext(loadingContext);
   const { setToast } = useContext(toastContext);
   const [form, setForm] = useState("sign-in");
@@ -36,23 +35,9 @@ const Account = () => {
     }));
   };
 
-  const setContextData = (res) => {
-    setAccountData((prev) => ({
-      ...prev,
-      modalOpen: false,
-      isLogged: true,
-      user: {
-        id: res.id,
-        name: res.name,
-        username: res.username,
-        token: res.token,
-      },
-    }));
-  };
-
   const signUp = async () => {
     setLoading(true);
-    const res = await serverApi.registerUser(signUpData);
+    const res = await register(signUpData);
     if (res.status) {
       setToast({
         open: true,
@@ -60,7 +45,7 @@ const Account = () => {
         message: "User successfully registered!",
         type: "success",
       });
-      setContextData(res.data);
+      setAccountData((prev) => ({ ...prev, modalOpen: false }));
     } else {
       setToast({
         open: true,
@@ -74,7 +59,7 @@ const Account = () => {
 
   const signIn = async () => {
     setLoading(true);
-    const res = await serverApi.loginUser(loginData);
+    const res = await login(loginData);
     if (res.status) {
       setToast({
         open: true,
@@ -82,7 +67,7 @@ const Account = () => {
         message: "User successfully logged in!",
         type: "success",
       });
-      setContextData(res.data);
+      setAccountData((prev) => ({ ...prev, modalOpen: false }));
     } else {
       setToast({
         open: true,

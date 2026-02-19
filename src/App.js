@@ -18,7 +18,8 @@ function App() {
   const { setPokemons } = useContext(pokeContext)
 
   const initConnection = async () => {
-    const conn = new HubConnectionBuilder()
+    try {
+      const conn = new HubConnectionBuilder()
       .withUrl("https://www.pokedexneaime.store/pokemonHub")
       .configureLogging(LogLevel.Information)
       .withAutomaticReconnect()
@@ -84,10 +85,21 @@ function App() {
     })
 
     await conn.start();
+    } catch (error) {
+      console.warn("SignalR connection could not start", error);
+      setToast({
+        open: true,
+        title: "Info!",
+        message: "Live updates are temporarily unavailable.",
+        type: "info"
+      });
+    }
   };
 
   useEffect(() => {
-    initConnection();
+    initConnection().catch((error) => {
+      console.warn("Unexpected SignalR startup failure", error);
+    });
   }, []);
 
   return (

@@ -3,6 +3,24 @@ import colors from "../../constants/colors";
 
 const Logo = styled.img`
   height: 70px;
+  animation: logoPulse var(--motion-slow) ease-out;
+
+  @keyframes logoPulse {
+    0% {
+      transform: scale(0.92);
+      filter: drop-shadow(0 0 0 rgba(123, 92, 255, 0));
+    }
+
+    65% {
+      transform: scale(1.03);
+      filter: drop-shadow(0 0 12px var(--accent-soft));
+    }
+
+    100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 0 rgba(123, 92, 255, 0));
+    }
+  }
 
   @media screen and (max-width: 768px) {
     height: 60px;
@@ -24,10 +42,10 @@ const Column = styled(Row)`
 `;
 
 const Button = styled.button`
-  background: ${colors.blue[600]};
+  background: linear-gradient(135deg, var(--accent-color, ${colors.accent.violet}) 0%, ${colors.blue[600]} 100%);
   border-radius: 6px;
   border: none;
-  color: white;
+  color: var(--button-text);
   padding: 8px 16px;
   cursor: pointer;
   display: flex;
@@ -36,13 +54,35 @@ const Button = styled.button`
   height: 45px;
   position: relative;
   gap: 8px;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -130%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: skewX(-22deg);
+    transition: left var(--motion-base) ease;
+  }
+
+  &:hover::before {
+    left: 130%;
+  }
 
   &:hover {
-    background: ${colors.blue[600]};
+    background: linear-gradient(135deg, var(--accent-color, ${colors.accent.violet}) 0%, ${colors.blue[700]} 100%);
   }
 
   &:active {
-    background: ${colors.blue[700]};
+    background: linear-gradient(135deg, ${colors.blue[800]} 0%, var(--accent-color, ${colors.accent.violet}) 100%);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
   }
 
   &:disabled {
@@ -83,7 +123,7 @@ const PokeProfile = styled.img`
 `;
 
 const Name = styled.h2`
-  color: white;
+  color: var(--text-primary);
   font-size: 30px;
   text-transform: capitalize;
   text-align: center;
@@ -127,7 +167,7 @@ const OutlinedBtn = styled.button`
 `;
 
 const StatsTitle = styled.h2`
-  color: white;
+  color: var(--text-primary);
   font-size: 20px;
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -138,14 +178,14 @@ const StatsTitle = styled.h2`
 `;
 
 const PokeCode = styled.p`
-  color: ${colors.gray[400]};
+  color: var(--text-secondary);
   font-size: 16px;
   text-transform: uppercase;
   margin-bottom: 8px;
 `;
 
 const Overlay = styled.div`
-  background: rgb(255, 255, 255, 0.25);
+  background: var(--overlay-bg);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   position: fixed;
@@ -165,14 +205,14 @@ const CloseButton = styled.i`
   position: absolute;
   top: 8px;
   right: 8px;
-  color: white;
+  color: var(--text-primary);
   cursor: pointer;
 `;
 
 const Input = styled.input`
   height: 45px;
-  background-color: white;
-  border: 1px solid #e5e5e5;
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
   box-sizing: border-box;
   border-radius: 6px;
   padding: 5px 10px;
@@ -182,7 +222,8 @@ const Input = styled.input`
   position: relative;
 
   &:focus {
-    border: none;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 0 0 3px var(--focus-ring);
   }
 
   i {
@@ -194,7 +235,7 @@ const Input = styled.input`
 `;
 
 const PageTitle = styled.h1`
-  color: white;
+  color: var(--text-primary);
   font-size: 40px;
   margin-bottom: 8px;
 

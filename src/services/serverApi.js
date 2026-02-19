@@ -1,111 +1,62 @@
-
 const url = "https://www.pokedexneaime.store/"
 
-const patchOptions = {
-  auth: {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + sessionStorage.getItem("token")
-    },
-    body: null
-  }
-}
-
-const postOptions = {
-  auth: {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + sessionStorage.getItem("token")
-    },
-    body: null
+const withAuthHeaders = (method = "GET", body = null) => ({
+  method,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
   },
-  post: {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: null
-  }
-}
-
-const getOptions = {
-  auth: {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${sessionStorage.getItem("token")}`
-    }
-  },
-  get: {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    }
-  }
-}
-
-const deleteOptions = {
-  auth: {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${sessionStorage.getItem("token")}`
-    },
-    body: null
-  }
-}
+  ...(body ? { body: JSON.stringify(body) } : {}),
+})
 
 const serverApi = {
   registerUser: async (data) => {
     try {
-      postOptions.post.body = JSON.stringify(data)
-      const a = await fetch(`${url}auth/register`,
-        postOptions.post
-      )
+      const a = await fetch(`${url}auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
       const b = await a.json()
       if (a.status !== 200) {
-        return { message: b.message, status: false }
+        return { message: b.message ?? "Register failed", status: false }
       }
-      if (b.token) {
-        sessionStorage.clear()
-        sessionStorage.setItem("token", b.token)
-        sessionStorage.setItem("user", b.username)
-        sessionStorage.setItem("id", b.id)
-        sessionStorage.setItem("name", b.name)
-      }
+
       return { message: "Signed-up in successfully!", status: true, data: b }
     } catch (error) {
       console.error(error)
-      return false
+      return { message: "Network error", status: false }
     }
   },
   loginUser: async (data) => {
     try {
-      postOptions.post.body = JSON.stringify(data)
-      const a = await fetch(`${url}auth/login`,
-        postOptions.post
-      )
+      const a = await fetch(`${url}auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
       const b = await a.json()
       if (a.status !== 200) {
-        return { message: b.message, status: false }
+        return { message: b.message ?? "Login failed", status: false }
       }
-      sessionStorage.clear()
-      sessionStorage.setItem("token", b.token)
-      sessionStorage.setItem("user", b.username)
-      sessionStorage.setItem("id", b.id)
-      sessionStorage.setItem("name", b.name)
+
       return { message: "Logged in successfully!", status: true, data: b }
     } catch (error) {
-      return { message: error, status: false }
+      return { message: "Network error", status: false }
     }
   },
   getCapturedPokemons: async () => {
     try {
-      const a = await fetch(`${url}pokemon/captured`,
-        getOptions.get
-      )
+      const a = await fetch(`${url}pokemon/captured`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       const b = await a.json()
 
       if (a.status !== 200) {
@@ -120,8 +71,13 @@ const serverApi = {
   },
   capturePokemon: async (pokemonName) => {
     try {
-      postOptions.auth.body = JSON.stringify({ pokemonName: pokemonName, userId: sessionStorage.getItem("id") })
-      const a = await fetch(`${url}pokemon/capture`, postOptions.auth)
+      const a = await fetch(
+        `${url}pokemon/capture`,
+        withAuthHeaders("POST", {
+          pokemonName: pokemonName,
+          userId: sessionStorage.getItem("id"),
+        })
+      )
       const b = await a.json()
 
       if (a.status === 200) {
@@ -137,7 +93,7 @@ const serverApi = {
   },
   getCapturedPokemonsByUser: async (userId) => {
     try {
-      const a = await fetch(`${url}pokemon/captured-by/${userId}`, getOptions.auth)
+      const a = await fetch(`${url}pokemon/captured-by/${userId}`, withAuthHeaders("GET"))
       const b = await a.json()
       return b;
     } catch (error) {
@@ -147,13 +103,15 @@ const serverApi = {
   },
   updateAccount: async (data) => {
     try {
-      patchOptions.auth.body = JSON.stringify({
-        id: sessionStorage.getItem("id"),
-        name: data.name,
-        username: data.username,
-        password: data.password
-      })
-      const a = await fetch(`${url}user/update`, patchOptions.auth)
+      const a = await fetch(
+        `${url}user/update`,
+        withAuthHeaders("PATCH", {
+          id: sessionStorage.getItem("id"),
+          name: data.name,
+          username: data.username,
+          password: data.password,
+        })
+      )
       const b = await a.json()
 
       if (a.status === 200) {
@@ -168,13 +126,44 @@ const serverApi = {
       return error
     }
   },
+  getThemePreferences: async () => {
+    try {
+      const a = await fetch(`${url}user/preferences/theme`, withAuthHeaders("GET"))
+      if (a.status !== 200) {
+        return false
+      }
+
+      const b = await a.json()
+      return { status: true, data: b }
+    } catch (error) {
+      return false
+    }
+  },
+  saveThemePreferences: async (preferences) => {
+    try {
+      const a = await fetch(
+        `${url}user/preferences/theme`,
+        withAuthHeaders("PATCH", preferences)
+      )
+
+      if (a.status !== 200) {
+        return false
+      }
+
+      return true
+    } catch (error) {
+      return false
+    }
+  },
   deleteAccount: async (password) => {
     try {
-      deleteOptions.auth.body = JSON.stringify({
-        id: sessionStorage.getItem("id"),
-        password: password
-      })
-      const a = await fetch(`${url}user/delete`, deleteOptions.auth)
+      const a = await fetch(
+        `${url}user/delete`,
+        withAuthHeaders("DELETE", {
+          id: sessionStorage.getItem("id"),
+          password: password,
+        })
+      )
       const b = await a.json()
 
       if (a.status !== 200) {

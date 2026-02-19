@@ -94,8 +94,9 @@ const PokeCard = ({ data, canRelease }) => {
 
   return (
     <Card
-      bg={createGradient(aux.color, colors.blue[900])}
+      $bg={createGradient(aux.color, colors.blue[900])}
       onClick={handleClick}
+      tabIndex={0}
     >
       {pokeData?.captured && (
         <img
@@ -166,7 +167,7 @@ const PokeCard = ({ data, canRelease }) => {
           }}
           onClick={releasePokemon}
         >
-          <i class="fa-solid fa-ban"></i>
+          <i className="fa-solid fa-ban"></i>
         </Button>
       )}
     </Card>

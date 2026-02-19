@@ -1,6 +1,8 @@
 import {
   LandingContainer,
   LeftSide,
+  FeaturedBadge,
+  HeroSubtitle,
   PokeImage,
   PokeName,
   RightSide,
@@ -60,9 +62,11 @@ const LandingPage = () => {
         }}
       >
         <LeftSide>
+          <FeaturedBadge>Featured Pokémon</FeaturedBadge>
           <PokeName>
             {pokemon?.name && pokemon?.name?.replaceAll("-", " ")}
           </PokeName>
+          <HeroSubtitle>Today's spotlight Pokémon</HeroSubtitle>
           <Row gap="8px" width={"max-content"}>
             {pokemon?.types?.map((type) => (
               <TypeMarker
