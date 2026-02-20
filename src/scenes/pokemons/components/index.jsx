@@ -5,14 +5,14 @@ const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  min-height: 100vh;
+  min-height: auto;
   position: relative;
-  margin-top: 10%;
-  width: 100vw;
-  padding: 20px;
+  width: min(1200px, 100%);
+  padding: 12px 20px;
+  box-sizing: border-box;
 
   @media screen and (max-width: 768px) {
-    margin-top: 20%;
+    padding: 10px 16px;
   }
 `;
 

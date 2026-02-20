@@ -1,7 +1,7 @@
 import { habitats } from '../constants/habitats';
 
 const url = "https://pokeapi.co/api/v2/"
-const itemsPerPage = 10
+const itemsPerPage = 12
 const options = {
   get: {
     method: "GET",
@@ -43,7 +43,7 @@ const pokeApi = {
     const res = await pokeApi.getPokemonsByHabitat(habitat);
     return res ? res.pokemon_species : [];
   },
-  filterPokemonByType: async (type, data = [], res) => {
+  filterPokemonByType: async (type, data = []) => {
     const pokemonsByType = await pokeApi.getPokemonsByType(type);
     if (!pokemonsByType) {
       return [];
@@ -72,32 +72,37 @@ const pokeApi = {
       }
 
       if (filters.habitat) {
-        const aux = []
-        const a = await pokeApi.filterPokemonByHabitat(filters.habitat);
+        const habitatPokemons = await pokeApi.filterPokemonByHabitat(filters.habitat);
+
         if (res.all.length === 0) {
-          console.clear()
-          a.map((pokemon) => aux.push({ name: pokemon.name, url: pokemon.url.replace("-species", "") }));
+          res.all = habitatPokemons.map((pokemon) => ({
+            name: pokemon.name,
+            url: pokemon.url.replace("-species", ""),
+          }));
         } else {
-          const dataNames = new Set(res.all.map(pokemon => pokemon.name));
-          const aux = []
-          a.forEach((pokemon) => {
+          const dataNames = new Set(res.all.map((pokemon) => pokemon.name));
+          const aux = [];
+          habitatPokemons.forEach((pokemon) => {
             if (dataNames.has(pokemon.name)) {
-              aux.push({ name: pokemon.name, url: pokemon.url })
+              aux.push({ name: pokemon.name, url: pokemon.url.replace("-species", "") });
             }
           });
+          res.all = aux;
         }
-        res.all = aux;
       }
       if (filters.type) {
         const a = await pokeApi.filterPokemonByType(filters.type, data);
         if (res.all.length === 0 && (!filters.habitat && !filters.name)) {
-          a.map((pokemon) => res.all.push({ name: pokemon.pokemon.name, url: pokemon.pokemon.url }));
+          res.all = a.map((pokemon) => ({
+            name: pokemon.pokemon.name,
+            url: pokemon.pokemon.url,
+          }));
         } else {
-          const dataNames = new Set(res.all.map(pokemon => pokemon.name));
-          const aux = []
+          const dataNames = new Set(res.all.map((pokemon) => pokemon.name));
+          const aux = [];
           a.forEach((pokemon) => {
             if (dataNames.has(pokemon.pokemon.name)) {
-              aux.push({ name: pokemon.pokemon.name, url: pokemon.pokemon.url })
+              aux.push({ name: pokemon.pokemon.name, url: pokemon.pokemon.url });
             }
           });
           res.all = aux;
@@ -117,7 +122,7 @@ const pokeApi = {
   },
   getRandomPokemon: async () => {
     try {
-      const random = Math.floor(Math.random() * 1010)
+      const random = Math.floor(Math.random() * 1010) + 1
       const a = await fetch(`${url}pokemon/${random}`, options.get)
       const b = await a.json()
       return b;

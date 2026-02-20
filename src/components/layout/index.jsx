@@ -7,6 +7,8 @@ const Layout = styled.div`
   justify-content: flex-start;
   min-height: 100vh;
   position: relative;
+  width: 100%;
+  padding-top: var(--navbar-height);
 `;
 
 export default Layout;

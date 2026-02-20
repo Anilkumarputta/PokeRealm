@@ -2,28 +2,14 @@ import styled from "styled-components";
 import colors from "../../constants/colors";
 
 const Logo = styled.img`
-  height: 70px;
-  animation: logoPulse var(--motion-slow) ease-out;
-
-  @keyframes logoPulse {
-    0% {
-      transform: scale(0.92);
-      filter: drop-shadow(0 0 0 rgba(123, 92, 255, 0));
-    }
-
-    65% {
-      transform: scale(1.03);
-      filter: drop-shadow(0 0 12px var(--accent-soft));
-    }
-
-    100% {
-      transform: scale(1);
-      filter: drop-shadow(0 0 0 rgba(123, 92, 255, 0));
-    }
-  }
+  height: 52px;
+  width: auto;
+  max-width: 100%;
+  display: block;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.22));
 
   @media screen and (max-width: 768px) {
-    height: 60px;
+    height: 42px;
   }
 `;
 
@@ -31,7 +17,7 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
   align-items: ${(props) => props.align ?? "center"};
-  justify-content: ${(props) => props.justify ?? "space-evenly"};
+  justify-content: ${(props) => props.justify ?? "center"};
   gap: ${(props) => props.gap ?? "0"};
   width: ${(props) => props.width ?? "100%"};
 `;
@@ -42,42 +28,34 @@ const Column = styled(Row)`
 `;
 
 const Button = styled.button`
-  background: linear-gradient(135deg, var(--accent-color, ${colors.accent.violet}) 0%, ${colors.blue[600]} 100%);
-  border-radius: 6px;
-  border: none;
+  background: linear-gradient(
+    135deg,
+    var(--accent-color, ${colors.accent.violet}) 0%,
+    ${colors.blue[600]} 100%
+  );
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: var(--button-text);
-  padding: 8px 16px;
+  padding: 8px 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 45px;
+  min-height: 40px;
   position: relative;
   gap: 8px;
-  overflow: hidden;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -130%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-    transform: skewX(-22deg);
-    transition: left var(--motion-base) ease;
-  }
-
-  &:hover::before {
-    left: 130%;
-  }
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: transform var(--motion-fast) ease, box-shadow var(--motion-fast) ease;
+  box-shadow: 0 6px 16px rgba(28, 72, 150, 0.35);
 
   &:hover {
-    background: linear-gradient(135deg, var(--accent-color, ${colors.accent.violet}) 0%, ${colors.blue[700]} 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(28, 72, 150, 0.42);
   }
 
   &:active {
-    background: linear-gradient(135deg, ${colors.blue[800]} 0%, var(--accent-color, ${colors.accent.violet}) 100%);
+    transform: translateY(0);
   }
 
   &:focus-visible {
@@ -87,60 +65,65 @@ const Button = styled.button`
 
   &:disabled {
     background: ${colors.gray[400]};
+    border-color: transparent;
+    box-shadow: none;
     cursor: not-allowed;
   }
 `;
 
-
-
 const Name = styled.h2`
   color: var(--text-primary);
-  font-size: 30px;
+  font-size: 22px;
+  line-height: 1.2;
   text-transform: capitalize;
   text-align: center;
-  margin-top: ${(props) => props.marginTop ?? "30%"};
+  margin-top: ${(props) => props.marginTop ?? "0"};
   word-wrap: break-word;
-  white-space: nowrap;
+  white-space: normal;
 `;
 
 const TypeMarker = styled.div`
   background: ${(props) => props.bg};
   color: white;
-  border-radius: ${(props) => (props.rounded ? "50%" : "6px")};
-  padding: 8px;
-  margin: 4px;
+  border-radius: ${(props) => (props.rounded ? "999px" : "10px")};
+  padding: 6px 8px;
+  margin: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   text-transform: uppercase;
   font-weight: 600;
+  font-size: 12px;
 
   img {
-    width: ${(props) => props.width ?? "20px"};
-    height: ${(props) => props.height ?? "20px"};
+    width: ${(props) => props.width ?? "16px"};
+    height: ${(props) => props.height ?? "16px"};
   }
 `;
 
 const OutlinedBtn = styled.button`
   background: transparent;
-  border: 1px solid ${(props) => props.border ?? "white"};
-  border-radius: 6px;
-  height: 45px;
-  color: ${(props) => props.color ?? "white"};
-  padding: 0 16px;
+  border: 1px solid ${(props) => props.border ?? "var(--border-subtle)"};
+  border-radius: 12px;
+  height: 40px;
+  color: ${(props) => props.color ?? "var(--text-primary)"};
+  padding: 0 14px;
   cursor: pointer;
+  font-weight: 600;
+  transition: all var(--motion-fast) ease;
 
   &:hover {
-    background: ${(props) => props.border ?? "white"};
-    color: ${(props) => props.color ?? "black"};
+    background: var(--surface-elevated);
   }
 `;
 
 const StatsTitle = styled.h2`
   color: var(--text-primary);
-  font-size: 20px;
-  text-transform: uppercase;
+  font-size: 18px;
+  text-transform: none;
+  font-weight: 700;
+  letter-spacing: 0.2px;
   margin-bottom: 8px;
 
   @media screen and (max-width: 768px) {
@@ -181,15 +164,16 @@ const CloseButton = styled.i`
 `;
 
 const Input = styled.input`
-  height: 45px;
+  height: 42px;
   background-color: var(--input-bg);
   border: 1px solid var(--input-border);
   box-sizing: border-box;
-  border-radius: 6px;
-  padding: 5px 10px;
+  border-radius: 12px;
+  padding: 6px 12px;
   width: 100%;
   outline: none;
-  font-size: 16px;
+  font-size: 15px;
+  color: var(--text-primary);
   position: relative;
 
   &:focus {
@@ -207,7 +191,7 @@ const Input = styled.input`
 
 const PageTitle = styled.h1`
   color: var(--text-primary);
-  font-size: 40px;
+  font-size: 34px;
   margin-bottom: 8px;
 
   @media screen and (max-width: 768px) {

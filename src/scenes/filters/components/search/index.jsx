@@ -8,25 +8,24 @@ const Search = () => {
   const { filters, setFilters } = useContext(filterContext);
   const nameRef = useRef(null);
 
-  const handleBlur = () => {
-    setFilters({ ...filters, name: nameRef?.current?.value });
+  const handleChange = () => {
+    setFilters({ ...filters, name: nameRef?.current?.value?.trim().toLowerCase() });
   };
-
 
   useEffect(() => {
     if (!filters.name) {
-      nameRef.current.value = null;
+      nameRef.current.value = "";
     }
   }, [filters.name]);
 
   return (
-    <Row width={desktop ? "50%" : "100%"} gap={"8px"}>
+    <Row width={desktop ? "calc(56% - 140px)" : "100%"} gap={"8px"}>
       <Input
         type="text"
-        placeholder="Search"
+        placeholder="Search by name"
         width={"90%"}
         ref={nameRef}
-        onBlur={handleBlur}
+        onChange={handleChange}
       />
     </Row>
   );

@@ -12,12 +12,12 @@ const DropdownContainer = styled.div`
 
 const DropdownBtn = styled.button`
   width: 100%;
-  height: 45px;
-  background-color: ${colors.blue[600]};
+  min-height: 42px;
+  background: linear-gradient(135deg, ${colors.blue[700]} 0%, ${colors.blue[600]} 100%);
   color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  font-size: 0.9rem;
   font-weight: 600;
   display: flex;
   justify-content: center;
@@ -34,7 +34,7 @@ const DropdownBtn = styled.button`
   }
 
   &:hover {
-    background-color: ${colors.blue[700]};
+    background: linear-gradient(135deg, ${colors.blue[800]} 0%, ${colors.blue[700]} 100%);
   }
 `;
 
@@ -42,10 +42,16 @@ const DropdownList = styled.ul`
   list-style-type: none;
   position: absolute;
   top: 0;
+  margin: 0;
+  padding: 0;
   width: 100%;
   z-index: 100;
   transition: all 0.3s ease;
   display: none;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.24);
 
   &.active {
     animation: slide-in-top 0.5s ease;
@@ -81,8 +87,8 @@ const DropdownList = styled.ul`
 
 const DropdownItem = styled.li`
   width: 100%;
-  height: 30px;
-  background-color: ${colors.blue[600]};
+  min-height: 34px;
+  background-color: var(--surface-panel);
   color: white;
   display: flex;
   justify-content: center;

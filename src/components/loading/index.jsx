@@ -1,11 +1,11 @@
 import pokeball from "../../assets/img/pokeball.png";
 import styled from "styled-components";
-import { Card } from "../card/components";
+import { Column } from "../common";
 
 const LoadingImage = styled.img`
-  animation: rotate 5s infinite linear;
-  width: 100px;
-  height: 100px;
+  animation: rotate 2s infinite linear;
+  width: 58px;
+  height: 58px;
 
   @keyframes rotate {
     100% {
@@ -16,13 +16,20 @@ const LoadingImage = styled.img`
 
 const Loading = () => {
   return (
-    <Card
+    <Column
+      width="100%"
+      gap="10px"
       style={{
-        border: "none",
+        minHeight: "180px",
+        border: "1px solid var(--border-subtle)",
+        borderRadius: "14px",
+        background: "var(--surface-panel)",
+        justifyContent: "center",
       }}
     >
       <LoadingImage src={pokeball} alt="loading" />
-    </Card>
+      <p style={{ margin: 0, color: "var(--text-secondary)", fontWeight: 600 }}>Loading Pokemon...</p>
+    </Column>
   );
 };
 

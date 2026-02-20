@@ -1,4 +1,4 @@
-<svg width="360" height="120" viewBox="0 0 360 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+﻿<svg width="360" height="120" viewBox="0 0 360 120" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="wordmarkGradient" x1="48" y1="24" x2="340" y2="108" gradientUnits="userSpaceOnUse">
       <stop stop-color="#FFD65A"/>
@@ -30,6 +30,6 @@
     PokeRealm
   </text>
   <text x="104" y="86" fill="#AAB7DA" font-family="'Montserrat', sans-serif" font-size="14" letter-spacing="4.2">
-    EXPLORE • COLLECT • BATTLE
+    EXPLORE | COLLECT | BATTLE
   </text>
 </svg>

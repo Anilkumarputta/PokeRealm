@@ -7,10 +7,12 @@ export const pokeContext = createContext();
 export const PokeContextProvider = ({ children }) => {
   const [pokemons, setPokemons] = useState({
     count: 0,
-    next: 10,
+    offset: 0,
+    next: 12,
     previous: null,
     results: [],
     all: [],
+    fixed: [],
     captured: [],
   });
 
@@ -31,9 +33,10 @@ export const PokeContextProvider = ({ children }) => {
       setPokemons((prev) => ({
         ...prev,
         count: res.count,
-        next: 10,
+        offset: 0,
+        next: res.next,
         previous: null,
-        results: res.results.slice(0, 10),
+        results: res.results.slice(0, 12),
         all: res.results,
         fixed: res.results,
       }));

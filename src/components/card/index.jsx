@@ -1,12 +1,10 @@
 import colors, { createGradient } from "../../constants/colors";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import pokeApi from "../../services/pokeApi";
 import { Row, Name, TypeMarker, Button } from "../common";
 import Stats from "../stats";
 import { modalContext } from "../../contexts/modalContext";
 import icons from "../../constants/icons";
-import { loadingContext } from "../../contexts/loadingContext";
-import Loading from "../loading";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { pokeContext } from "../../contexts/pokeContext";
 import { Card } from "./components";
@@ -17,14 +15,15 @@ import { accountContext } from "../../contexts/accountContext";
 const PokeCard = ({ data, canRelease }) => {
   const desktop = useMediaQuery("(min-width: 1024px)");
   const { setModal, setData } = useContext(modalContext);
-  const { loading, setLoading } = useContext(loadingContext);
   const { pokemons } = useContext(pokeContext);
   const { accountData } = useContext(accountContext);
-  const [pokeData, setPokeData] = useState();
+  const [pokeData, setPokeData] = useState(null);
+  const [cardLoading, setCardLoading] = useState(true);
+  const [releasing, setReleasing] = useState(false);
   const [aux, setAux] = useState({ color: null, image: [] });
 
-  const getPokemon = async () => {
-    setLoading(true);
+  const getPokemon = useCallback(async () => {
+    setCardLoading(true);
     try {
       const response = await pokeApi.getPokemon(data.url);
       if (response) {
@@ -35,7 +34,7 @@ const PokeCard = ({ data, canRelease }) => {
           captured: captured
             ? {
                 captured: true,
-                username: captured.user.username,
+                username: captured.user?.username ?? captured.username,
                 capturedAt: captured.capturedAt,
               }
             : null,
@@ -48,39 +47,62 @@ const PokeCard = ({ data, canRelease }) => {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      setCardLoading(false);
     }
-  };
+  }, [data.url, pokemons.captured]);
 
   const handleClick = () => {
+    if (!pokeData) {
+      return;
+    }
+
     setData(pokeData);
     setModal(true);
   };
 
   const releasePokemon = async (e) => {
     e.stopPropagation();
-    setLoading(true);
-    const conn = new HubConnectionBuilder()
-      .withUrl("https://www.pokedexneaime.store/pokemonHub")
-      .configureLogging(LogLevel.Information)
-      .withAutomaticReconnect()
-      .build();
-    await conn.start();
-    await conn.invoke("ReleasePokemon", {
-      userId: parseInt(accountData.user.id),
-      pokemonName: data.name,
-    });
-    setLoading(false);
-    window.location.reload();
+    setReleasing(true);
+    try {
+      const conn = new HubConnectionBuilder()
+        .withUrl("https://www.pokedexneaime.store/pokemonHub")
+        .configureLogging(LogLevel.Information)
+        .withAutomaticReconnect()
+        .build();
+      await conn.start();
+      await conn.invoke("ReleasePokemon", {
+        userId: parseInt(accountData.user.id, 10),
+        pokemonName: data.name,
+      });
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setReleasing(false);
+    }
   };
 
   useEffect(() => {
     getPokemon();
-  }, [data.url, pokemons.captured]);
+  }, [getPokemon]);
 
-  if (loading) {
-    return <Loading />;
+  if (cardLoading && !pokeData) {
+    return (
+      <Card
+        $bg={createGradient(colors.blue[700], colors.blue[900])}
+        style={{ cursor: "default", justifyContent: "center" }}
+      >
+        <Name marginTop="0" style={{ fontSize: "18px" }}>
+          {data?.name?.replaceAll("-", " ")}
+        </Name>
+        <p style={{ opacity: 0.85 }}>Loading details...</p>
+      </Card>
+    );
   }
+
+  const artwork =
+    pokeData?.sprites?.other?.["official-artwork"]?.front_default ??
+    pokeData?.sprites?.front_default;
 
   return (
     <Card
@@ -94,15 +116,41 @@ const PokeCard = ({ data, canRelease }) => {
           alt="Captured"
           style={{
             position: "absolute",
-            top: "10px",
-            left: "10px",
-            width: "20px",
-            height: "20px",
+            top: "12px",
+            left: "12px",
+            width: "22px",
+            height: "22px",
           }}
         />
       )}
-      <Name> ● {data?.name?.replaceAll("-", " ")} ● </Name>
-      <Row width={"100%"} style={{ marginTop: "10px" }}>
+      <Name marginTop="0" style={{ fontSize: desktop ? "22px" : "19px" }}>
+        {data?.name?.replaceAll("-", " ")}
+      </Name>
+      {artwork && (
+        <img
+          className="poke-artwork"
+          src={artwork}
+          alt={pokeData?.name ?? data?.name}
+          loading="lazy"
+          style={{
+            width: desktop ? "min(80%, 228px)" : "min(84%, 184px)",
+            maxHeight: desktop ? "228px" : "184px",
+            height: "auto",
+            objectFit: "contain",
+            marginTop: "12px",
+            filter: "drop-shadow(0 12px 14px rgba(0, 0, 0, 0.34))",
+          }}
+        />
+      )}
+      <Row
+        width={"100%"}
+        style={{
+          marginTop: "10px",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          zIndex: 1,
+        }}
+      >
         {pokeData?.types?.map((type) => (
           <TypeMarker key={type.slot} bg={colors.types[type.type.name]}>
             <img src={icons[type.type.name]} alt={type.type.name} /> {type.type.name}
@@ -110,30 +158,35 @@ const PokeCard = ({ data, canRelease }) => {
         ))}
       </Row>
       <Row
-        justify={"space-evenly"}
-        gap={"16px"}
+        justify={"space-between"}
+        gap={"10px"}
         width={"100%"}
         style={{
-          marginTop: "15px",
+          marginTop: "12px",
+          borderTop: "1px solid rgba(255, 255, 255, 0.16)",
+          paddingTop: "12px",
+          zIndex: 1,
         }}
       >
-        <Stats icon={"ruler"} name={"Altura"} value={pokeData?.height} unit={"m"} />
-        <Stats icon={"weight"} name={"Peso"} value={pokeData?.weight} unit={"Kg"} />
+        <Stats icon={"ruler"} name={"Height"} value={pokeData?.height} unit={"m"} />
+        <Stats icon={"weight"} name={"Weight"} value={pokeData?.weight} unit={"Kg"} />
       </Row>
       {canRelease && (
         <Button
           style={{
             position: "absolute",
-            top: "0px",
-            right: "10px",
-            height: "30px",
+            top: "8px",
+            right: "8px",
+            minHeight: "30px",
             backgroundColor: colors.types.fighting,
-            marginTop: "16px",
-            padding: desktop ? "" : "5px",
+            padding: desktop ? "0 10px" : "0 8px",
+            opacity: releasing ? 0.7 : 1,
+            borderRadius: "10px",
           }}
+          disabled={releasing}
           onClick={releasePokemon}
         >
-          <i className="fa-solid fa-ban"></i>
+          <i className="fa-solid fa-ban"></i> Release
         </Button>
       )}
     </Card>

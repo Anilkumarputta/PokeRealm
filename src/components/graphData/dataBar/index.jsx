@@ -3,18 +3,18 @@ import { useEffect, useState } from "react";
 
 const BarContainer = styled.div`
   width: 100%;
-  height: 16px;
-  background: #eee;
-  border-radius: 10px;
+  height: ${(props) => (props.compact ? "8px" : "10px")};
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
   overflow: hidden;
 `;
 
 const Bar = styled.div`
   height: 100%;
   width: ${(props) => props.width};
-  border-radius: 10px;
+  border-radius: 999px;
   transition: width 0.5s ease;
-  background-color: ${(props) => props.color};
+  background: ${(props) => props.color};
 
   @keyframes width {
     from {
@@ -26,7 +26,7 @@ const Bar = styled.div`
   }
 `;
 
-const DataBar = ({ value }) => {
+const DataBar = ({ value, compact = false }) => {
   const [data, setData] = useState({
     percentage: 0,
     color: "#bbb",
@@ -35,16 +35,16 @@ const DataBar = ({ value }) => {
   useEffect(() => {
     const result = (value / 200) * 100;
     if (result > 60) {
-      setData({ percentage: result, color: "#00ff00" });
+      setData({ percentage: result, color: "linear-gradient(90deg, #2add8b 0%, #7ee96c 100%)" });
     } else if (result > 30) {
-      setData({ percentage: result, color: "#fffa50" });
+      setData({ percentage: result, color: "linear-gradient(90deg, #ffc44d 0%, #ffe57f 100%)" });
     } else {
-      setData({ percentage: result, color: "#ff0000" });
+      setData({ percentage: result, color: "linear-gradient(90deg, #ff5f80 0%, #ff8b54 100%)" });
     }
   }, [value]);
 
   return (
-    <BarContainer>
+    <BarContainer compact={compact}>
       <Bar width={`${data.percentage}%`} color={data.color} />
     </BarContainer>
   );

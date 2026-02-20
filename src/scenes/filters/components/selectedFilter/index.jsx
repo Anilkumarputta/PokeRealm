@@ -15,7 +15,16 @@ const SelectedFilter = ({ name, type }) => {
   };
 
   return (
-    <Button>
+    <Button
+      onClick={handleRemove}
+      title={`Remove ${type} filter`}
+      style={{
+        minHeight: "34px",
+        padding: "4px 10px",
+        fontSize: "12px",
+        borderRadius: "999px",
+      }}
+    >
       {icons[name.toLowerCase()] && (
         <TypeMarker
           bg={colors.types[name.toLowerCase()]}
@@ -27,9 +36,7 @@ const SelectedFilter = ({ name, type }) => {
         </TypeMarker>
       )}
       {name}
-      <span onClick={handleRemove}>
-        <i className={`fas fa-times`} />
-      </span>
+      <i className="fas fa-times" />
     </Button>
   );
 };

@@ -9,7 +9,7 @@ import PokeRoutes from "./router/router";
 import EditAccount from "./scenes/account/editAccount";
 import DeleteAccount from "./scenes/account/deleteAccount";
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
-import { useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { toastContext } from "./contexts/toastContext";
 import { pokeContext } from "./contexts/pokeContext";
 
@@ -17,7 +17,7 @@ function App() {
   const { setToast } = useContext(toastContext)
   const { setPokemons } = useContext(pokeContext)
 
-  const initConnection = async () => {
+  const initConnection = useCallback(async () => {
     try {
       const conn = new HubConnectionBuilder()
       .withUrl("https://www.pokedexneaime.store/pokemonHub")
@@ -94,13 +94,13 @@ function App() {
         type: "info"
       });
     }
-  };
+  }, [setPokemons, setToast]);
 
   useEffect(() => {
     initConnection().catch((error) => {
       console.warn("Unexpected SignalR startup failure", error);
     });
-  }, []);
+  }, [initConnection]);
 
   return (
     <Router>

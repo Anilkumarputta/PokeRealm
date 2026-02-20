@@ -46,6 +46,7 @@ const serverApi = {
 
       return { message: "Logged in successfully!", status: true, data: b }
     } catch (error) {
+      console.error(error)
       return { message: "Network error", status: false }
     }
   },
@@ -86,9 +87,10 @@ const serverApi = {
         return { message: "Unauthorized", status: false }
       }
 
+      return { message: b?.message ?? "Capture failed", status: false }
     } catch (error) {
       console.error(error)
-      return false
+      return { message: "Network error", status: false }
     }
   },
   getCapturedPokemonsByUser: async (userId) => {
@@ -123,7 +125,7 @@ const serverApi = {
       }
     } catch (error) {
       console.error(error);
-      return error
+      return { message: "Network error", status: false }
     }
   },
   getThemePreferences: async () => {
