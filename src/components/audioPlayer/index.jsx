@@ -59,8 +59,10 @@ const AudioPlayer = ({ audio, width }) => {
 
   return (
     <Row width={width} gap={"8px"} justify={"flex-start"}>
-      <Player onMouseEnter={warmAudio} onFocus={warmAudio} onClick={playAudio}>
-        <i className="fa-solid fa-play"></i>
+      <Player onMouseEnter={warmAudio} onFocus={warmAudio} onClick={playAudio} title="Play cry" aria-label="Play cry">
+        <span aria-hidden="true" style={{ fontSize: "16px", lineHeight: 1, marginLeft: "2px" }}>
+          ▶
+        </span>
       </Player>
       Play Cry
     </Row>

@@ -111,7 +111,9 @@ const Footer = () => {
               fontWeight: 600,
             }}
           >
-            <i className="fa-solid fa-arrow-up"></i>
+            <span aria-hidden="true" style={{ fontSize: "22px", lineHeight: 1 }}>
+              ↑
+            </span>
           </button>
         </Row>
 

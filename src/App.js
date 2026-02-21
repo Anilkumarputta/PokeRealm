@@ -25,23 +25,31 @@ function App() {
       .withAutomaticReconnect()
       .build();
 
-      conn.on("CapturePokemonFailed", (data) => {
+      const showInfoToast = (message) => {
         setToast({
           open: true,
           title: "Info!",
-          message: data.message,
+          message,
           type: "info"
         })
+      }
+
+      conn.on("CapturePokemonFailed", (data) => {
+        showInfoToast(data.message)
       })
 
       conn.on("PokemonCaptured", (data) => {
         setPokemons((prev) => ({
           ...prev,
-          captured: [...prev.captured, {
-            pokemonName: data.pokemonName,
-            username: data.user.username,
-            capturedAt: data.capturedAt
-          }]
+          captured: prev.captured.some(
+            (item) => item.pokemonName?.toLowerCase() === data.pokemonName?.toLowerCase()
+          )
+            ? prev.captured
+            : [...prev.captured, {
+              pokemonName: data.pokemonName,
+              username: data.user.username,
+              capturedAt: data.capturedAt
+            }]
         }))
 
         setToast({
@@ -67,32 +75,16 @@ function App() {
       })
 
       conn.on("ReleasePokemonFailed", (data) => {
-        setToast({
-          open: true,
-          title: "Info!",
-          message: data.message,
-          type: "info"
-        })
+        showInfoToast(data.message)
       })
 
       conn.on("PokemonNotReleased", (data) => {
-        setToast({
-          open: true,
-          title: "Info!",
-          message: data.message,
-          type: "info"
-        })
+        showInfoToast(data.message)
       })
 
     await conn.start();
     } catch (error) {
       console.warn("SignalR connection could not start", error);
-      setToast({
-        open: true,
-        title: "Info!",
-        message: "Live updates are temporarily unavailable.",
-        type: "info"
-      });
     }
   }, [setPokemons, setToast]);
 
