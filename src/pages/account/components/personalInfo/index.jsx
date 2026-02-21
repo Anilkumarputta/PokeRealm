@@ -3,7 +3,12 @@ import { Column } from "../../../../components/common";
 
 const PersonalInfo = ({ title, value }) => {
   return (
-    <Column width={"max-content"} gap={"8px"} align={"flex-start"}>
+    <Column
+      width={"min(100%, 220px)"}
+      gap={"8px"}
+      align={"flex-start"}
+      style={{ overflowWrap: "anywhere" }}
+    >
       <InfoTitle>{title}: </InfoTitle>
       <InfoText>{value}</InfoText>
     </Column>

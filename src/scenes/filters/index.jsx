@@ -107,7 +107,7 @@ const Filters = () => {
       gap="14px"
       style={{
         maxWidth: "1200px",
-        padding: desktop ? "4px 20px" : "0 16px",
+        padding: desktop ? "4px var(--page-gutter)" : "0 var(--page-gutter)",
         scrollMarginTop: "calc(var(--navbar-height) + 10px)",
       }}
     >
@@ -154,7 +154,15 @@ const Filters = () => {
 
         {(filters.type || filters.habitat || filters.name) && (
           <Column width="100%" gap="8px" align="flex-start">
-            <Row width="100%" justify="space-between" gap={desktop ? "8px" : "10px"}>
+            <Row
+              width="100%"
+              justify="space-between"
+              gap={desktop ? "8px" : "10px"}
+              style={{
+                flexWrap: "wrap",
+                alignItems: desktop ? "center" : "flex-start",
+              }}
+            >
               <Row
                 gap={desktop ? "8px" : "6px"}
                 width="auto"
@@ -168,6 +176,7 @@ const Filters = () => {
               <OutlinedBtn
                 style={{
                   opacity: 0.9,
+                  width: desktop ? "auto" : "100%",
                 }}
                 onClick={handleClearFilters}
               >

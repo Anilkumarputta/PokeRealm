@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import { Button, Row } from "../../components/common";
 import { pokeContext } from "../../contexts/pokeContext";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 const PAGE_SIZE = 12;
 
 const Controls = () => {
+  const wide = useMediaQuery("(min-width: 640px)");
   const { pokemons, setPokemons } = useContext(pokeContext);
 
   const currentOffset = Math.max(
@@ -39,7 +41,7 @@ const Controls = () => {
       justify="center"
       style={{
         marginTop: "8px",
-        padding: "0 20px 8px",
+        padding: "0 var(--page-gutter) 8px",
         boxSizing: "border-box",
       }}
     >
@@ -50,10 +52,17 @@ const Controls = () => {
           background: "var(--surface-panel)",
           border: "1px solid var(--border-subtle)",
           borderRadius: "14px",
-          padding: "10px 12px",
+          padding: wide ? "10px 12px" : "10px",
+          flexDirection: wide ? "row" : "column",
+          gap: wide ? "10px" : "8px",
+          alignItems: "center",
         }}
       >
-        <Button onClick={() => setPage(currentOffset - PAGE_SIZE)} disabled={currentOffset === 0}>
+        <Button
+          onClick={() => setPage(currentOffset - PAGE_SIZE)}
+          disabled={currentOffset === 0}
+          style={{ width: wide ? "auto" : "100%" }}
+        >
           <i className="fa fa-arrow-left"></i> Prev
         </Button>
 
@@ -70,6 +79,7 @@ const Controls = () => {
         <Button
           onClick={() => setPage(currentOffset + PAGE_SIZE)}
           disabled={currentOffset + PAGE_SIZE >= (pokemons.count ?? 0)}
+          style={{ width: wide ? "auto" : "100%" }}
         >
           Next <i className="fa fa-arrow-right"></i>
         </Button>

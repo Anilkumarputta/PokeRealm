@@ -19,11 +19,17 @@ const Search = () => {
   }, [filters.name]);
 
   return (
-    <Row width={desktop ? "calc(56% - 140px)" : "100%"} gap={"8px"}>
+    <Row
+      width={desktop ? "auto" : "100%"}
+      gap={"8px"}
+      style={{
+        flex: desktop ? 1 : "initial",
+      }}
+    >
       <Input
         type="text"
         placeholder="Search by name"
-        width={"90%"}
+        width={"100%"}
         ref={nameRef}
         onChange={handleChange}
       />

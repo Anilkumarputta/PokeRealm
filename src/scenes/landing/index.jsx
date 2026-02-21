@@ -18,6 +18,7 @@ import { useMediaQuery } from "../../hooks/useMediaQuery";
 import AudioPlayer from "../../components/audioPlayer";
 
 const Landing = () => {
+  const tablet = useMediaQuery("(min-width: 768px)");
   const desktop = useMediaQuery("(min-width: 1024px)");
   const [pokemon, setPokemon] = useState({});
   const [data, setData] = useState({
@@ -54,7 +55,7 @@ const Landing = () => {
       <LandingContainer
         background={createGradient(data.color)}
         style={{
-          flexDirection: desktop ? "row" : "column-reverse",
+          flexDirection: tablet ? "row" : "column-reverse",
         }}
       >
         <LeftSide>
@@ -70,7 +71,7 @@ const Landing = () => {
           </Row>
           {primaryStats.length > 0 && (
             <Column
-              width={desktop ? "56%" : "100%"}
+              width={tablet ? "56%" : "100%"}
               align="flex-start"
               style={{
                 padding: 0,

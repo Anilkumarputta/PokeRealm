@@ -149,7 +149,7 @@ const PokeModal = () => {
             value={modalData?.height}
             unit={"m"}
           />
-          <Row>
+          <Row width={"auto"}>
             {modalData?.types.map((item) => {
               return (
                 <TypeMarker
@@ -171,8 +171,15 @@ const PokeModal = () => {
         </PhysioData>
 
         <Column width={"95%"} justify={"flex-end"} gap={"16px"}>
-          <Row width={"100%"} align={"flex-start"}>
-            <Column width={"50%"} align={"flex-start"}>
+          <Row
+            width={"100%"}
+            align={"flex-start"}
+            style={{
+              flexDirection: desktop ? "row" : "column",
+              gap: desktop ? "12px" : "16px",
+            }}
+          >
+            <Column width={desktop ? "50%" : "100%"} align={"flex-start"}>
               <StatsTitle>
                 <i className="fa-solid fa-chart-simple"></i> Base Stats
               </StatsTitle>
@@ -208,7 +215,7 @@ const PokeModal = () => {
               />
             </Column>
 
-            <Column width={"50%"} gap={"16px"} height={"100%"}>
+            <Column width={desktop ? "50%" : "100%"} gap={"16px"} height={"100%"}>
               <Column width={"100%"} align={"flex-start"}>
                 <StatsTitle>
                   <i className="fa-solid fa-star"></i> Abilities
@@ -251,7 +258,13 @@ const PokeModal = () => {
                 >
                   <i className="fa-solid fa-circle-radiation"></i> Weaknesses
                 </StatsTitle>
-                <Row width={"max-content"}>
+                <Row
+                  width={"100%"}
+                  justify={"flex-start"}
+                  style={{
+                    flexWrap: "wrap",
+                  }}
+                >
                   {weaknesses.map((item) => {
                     return (
                       <TypeMarker

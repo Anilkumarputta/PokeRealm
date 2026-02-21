@@ -44,6 +44,7 @@ const GlobalStyle = createGlobalStyle`
     --motion-base: 0.35s;
     --motion-slow: 0.5s;
 
+    --page-gutter: clamp(12px, 2.6vw, 22px);
     --navbar-height: 122px;
   }
 
@@ -161,9 +162,22 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
   }
 
+  @media screen and (max-width: 1024px) {
+    :root {
+      --navbar-height: 114px;
+    }
+  }
+
   @media screen and (max-width: 768px) {
     :root {
-      --navbar-height: 110px;
+      --navbar-height: 108px;
+    }
+  }
+
+  @media screen and (max-width: 540px) {
+    :root {
+      --navbar-height: 156px;
+      --page-gutter: 12px;
     }
   }
 

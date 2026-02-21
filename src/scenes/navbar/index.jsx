@@ -34,6 +34,7 @@ const escapeCsv = (value) => {
 
 const Navbar = () => {
   const desktop = useMediaQuery("(min-width: 768px)");
+  const compactPhone = useMediaQuery("(max-width: 540px)");
   const { accountData, setAccountData, logout } = useContext(accountContext);
   const { pokemons } = useContext(pokeContext);
   const { themeMode } = useContext(themeContext);
@@ -138,14 +139,22 @@ const Navbar = () => {
     >
       <div
         style={{
-          width: "min(1160px, 100%)",
-          padding: desktop ? "10px 16px" : "8px 10px",
+          width: "min(1200px, 100%)",
+          padding: desktop ? "10px var(--page-gutter)" : "8px var(--page-gutter)",
           display: "flex",
           flexDirection: "column",
           gap: desktop ? "8px" : "6px",
         }}
       >
-        <Row width="100%" justify="space-between">
+        <Row
+          width="100%"
+          justify="space-between"
+          style={{
+            alignItems: "center",
+            gap: compactPhone ? "8px" : "10px",
+            flexWrap: compactPhone ? "wrap" : "nowrap",
+          }}
+        >
           <Link
             to="/"
             onClick={handleHomeNav}
@@ -154,6 +163,8 @@ const Navbar = () => {
             style={{
               display: "inline-flex",
               alignItems: "center",
+              justifyContent: "center",
+              width: compactPhone ? "100%" : "auto",
               borderRadius: "12px",
               padding: desktop ? "4px 8px" : "2px 6px",
               border: "1px solid rgba(255, 255, 255, 0.14)",
@@ -167,18 +178,27 @@ const Navbar = () => {
               src={logo}
               alt="PokeRealm logo"
               style={{
-                height: desktop ? "54px" : "44px",
+                height: compactPhone ? "40px" : desktop ? "54px" : "44px",
               }}
             />
           </Link>
 
-          <Row width="auto" gap={desktop ? "8px" : "6px"} justify="flex-end">
+          <Row
+            width={compactPhone ? "100%" : "auto"}
+            gap={desktop ? "8px" : "6px"}
+            justify={compactPhone ? "space-between" : "flex-end"}
+            style={{
+              flexWrap: compactPhone ? "wrap" : "nowrap",
+            }}
+          >
             <ExportMenu
               title="Open export options"
+              label={compactPhone ? "Export" : "Export"}
               style={{
-                minHeight: desktop ? "38px" : "34px",
-                padding: desktop ? "0 12px" : "0 10px",
-                fontSize: desktop ? "13px" : "12px",
+                minHeight: compactPhone ? "32px" : desktop ? "38px" : "34px",
+                padding: compactPhone ? "0 8px" : desktop ? "0 12px" : "0 10px",
+                fontSize: compactPhone ? "11px" : desktop ? "13px" : "12px",
+                width: compactPhone ? "calc(50% - 3px)" : "auto",
               }}
               items={[
                 {
@@ -215,9 +235,10 @@ const Navbar = () => {
             {accountData.isLogged ? (
               <Button
                 style={{
-                  minHeight: desktop ? "38px" : "34px",
-                  padding: desktop ? "0 12px" : "0 10px",
-                  fontSize: desktop ? "13px" : "12px",
+                  minHeight: compactPhone ? "32px" : desktop ? "38px" : "34px",
+                  padding: compactPhone ? "0 8px" : desktop ? "0 12px" : "0 10px",
+                  fontSize: compactPhone ? "11px" : desktop ? "13px" : "12px",
+                  width: compactPhone ? "calc(50% - 3px)" : "auto",
                 }}
                 onClick={handleLogout}
               >
@@ -226,9 +247,10 @@ const Navbar = () => {
             ) : (
               <Button
                 style={{
-                  minHeight: desktop ? "38px" : "34px",
-                  padding: desktop ? "0 12px" : "0 10px",
-                  fontSize: desktop ? "13px" : "12px",
+                  minHeight: compactPhone ? "32px" : desktop ? "38px" : "34px",
+                  padding: compactPhone ? "0 8px" : desktop ? "0 12px" : "0 10px",
+                  fontSize: compactPhone ? "11px" : desktop ? "13px" : "12px",
+                  width: compactPhone ? "calc(50% - 3px)" : "auto",
                 }}
                 onClick={() => setAccountData((prev) => ({ ...prev, modalOpen: true }))}
               >

@@ -8,11 +8,11 @@ const PageContainer = styled.div`
   min-height: auto;
   position: relative;
   width: min(1200px, 100%);
-  padding: 12px 20px;
+  padding: 12px var(--page-gutter);
   box-sizing: border-box;
 
   @media screen and (max-width: 768px) {
-    padding: 10px 16px;
+    padding: 10px var(--page-gutter);
   }
 `;
 

@@ -6,8 +6,10 @@ const ModalContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 450px;
+  width: min(450px, 92vw);
   min-height: 350px;
+  max-height: min(92vh, 760px);
+  overflow-y: auto;
   border-radius: 6px;
   box-shadow: 0 8px 32px 0 rgba(8, 8, 8, 0.37);
   position: relative;
@@ -15,8 +17,9 @@ const ModalContainer = styled.div`
   margin: 0;
 
   @media screen and (max-width: 768px) {
-    width: 90%;
-    max-height: 95%;
+    width: 92%;
+    max-height: 92vh;
+    padding: 14px 8px;
   }
 `;
 
@@ -30,6 +33,8 @@ const PhysioData = styled.div`
   justify-content: space-evenly;
   padding: 8px;
   margin: 10px 0;
+  flex-wrap: wrap;
+  row-gap: 12px;
 `;
 
 export { ModalContainer, PhysioData };

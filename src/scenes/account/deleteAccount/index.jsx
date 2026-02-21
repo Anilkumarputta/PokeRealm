@@ -15,8 +15,10 @@ import { loadingContext } from "./../../../contexts/loadingContext";
 import { toastContext } from "./../../../contexts/toastContext";
 import Loading from "../../../components/loading";
 import { Navigate } from "react-router-dom";
+import { useMediaQuery } from "../../../hooks/useMediaQuery";
 
 const DeleteAccount = () => {
+  const wide = useMediaQuery("(min-width: 640px)");
   const { accountData, setAccountData, logout } = useContext(accountContext);
   const { loading, setLoading } = useContext(loadingContext);
   const { setToast } = useContext(toastContext);
@@ -106,18 +108,20 @@ const DeleteAccount = () => {
                 gap={"16px"}
                 style={{
                   marginTop: "8px",
+                  flexDirection: wide ? "row" : "column",
                 }}
               >
                 <Button
                   style={{
-                    width: "100%",
+                    width: wide ? "auto" : "100%",
+                    flex: 1,
                     backgroundColor: colors.types.fighting,
                   }}
                   onClick={() => setForm("password")}
                 >
                   <i className="fa-solid fa-trash"></i> Delete Account
                 </Button>
-                <Button style={{ width: "100%" }} onClick={closeModal}>
+                <Button style={{ width: wide ? "auto" : "100%", flex: 1 }} onClick={closeModal}>
                   <i className="fa-solid fa-circle-xmark"></i> Cancel
                 </Button>
               </Row>

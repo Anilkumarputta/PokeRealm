@@ -20,14 +20,14 @@ const getTypeColor = (type) => {
 const ToastContainer = styled.div`
   &.toast {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: calc(var(--navbar-height) + 8px);
+    right: 12px;
     z-index: 1000000000000;
     background-color: #f9f9f9;
     border-radius: 10px;
     padding: 1ch;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 280px;
+    width: min(300px, calc(100vw - 24px));
     color: black;
     border-left: 6px solid ${(props) => getTypeColor(props.type)};
     overflow: hidden;
@@ -36,9 +36,8 @@ const ToastContainer = styled.div`
     animation: slideOut 0.5s forwards;
 
     @media screen and (max-width: 768px) {
-      width: 90%;
-      right: 0;
-      top: 60px;
+      width: calc(100vw - 24px);
+      right: 12px;
     }
   }
 
@@ -131,13 +130,6 @@ const ToastContainer = styled.div`
     }
   }
 
-  @media screen and (max-width: 768px) {
-    .toast {
-      width: 90%;
-      right: 0;
-      top: 20px;
-    }
-  }
 `;
 
 export { ToastContainer };
